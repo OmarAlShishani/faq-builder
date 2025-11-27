@@ -1,0 +1,153 @@
+{
+  "metadata": {
+    "exported_at": "2025-11-26T12:00:00.000Z",
+    "ai_provider": "gemini",
+    "ai_model": "gemini-1.5-flash",
+    "total_questions": 2
+  },
+  "data": [
+    {
+      "original_question": "How do I reset my password?",
+      "rephrased": {
+        "arabic": "كيف يمكنني إعادة تعيين كلمة المرور الخاصة بي؟",
+        "english": "What is the process for resetting my account password?"
+      },
+      "synonyms_arabic": [
+        "كيف أقوم بإعادة ضبط كلمة السر؟",
+        "ما الطريقة لاستعادة كلمة المرور؟",
+        "كيف أغير كلمة المرور المنسية؟",
+        "ما خطوات إعادة تعيين كلمة المرور؟",
+        "كيف أستطيع تغيير كلمة السر؟",
+        "ما هي عملية استرجاع كلمة المرور؟",
+        "كيف أعيد ضبط كلمة المرور للحساب؟",
+        "ما الإجراء لإعادة تعيين كلمة السر؟",
+        "كيف أقوم باستعادة الوصول لحسابي؟",
+        "ما طريقة تحديث كلمة المرور المنسية؟"
+      ],
+      "synonyms_english": [
+        "How can I change my forgotten password?",
+        "What's the procedure to reset my login credentials?",
+        "How do I recover my account password?",
+        "What are the steps to reset my password?",
+        "How can I update my password?",
+        "What's the process for password recovery?",
+        "How do I change my account password?",
+        "What do I need to do to reset my password?",
+        "How can I regain access to my account?",
+        "What's the method to update forgotten password?"
+      ],
+      "synonyms_arabic_formatted": [
+        "كيف^^أقوم^^بإعادة^^ضبط^^كلمة^^السر؟",
+        "ما^^الطريقة^^لاستعادة^^كلمة^^المرور؟",
+        "كيف^^أغير^^كلمة^^المرور^^المنسية؟",
+        "ما^^خطوات^^إعادة^^تعيين^^كلمة^^المرور؟",
+        "كيف^^أستطيع^^تغيير^^كلمة^^السر؟",
+        "ما^^هي^^عملية^^استرجاع^^كلمة^^المرور؟",
+        "كيف^^أعيد^^ضبط^^كلمة^^المرور^^للحساب؟",
+        "ما^^الإجراء^^لإعادة^^تعيين^^كلمة^^السر؟",
+        "كيف^^أقوم^^باستعادة^^الوصول^^لحسابي؟",
+        "ما^^طريقة^^تحديث^^كلمة^^المرور^^المنسية؟"
+      ],
+      "synonyms_english_formatted": [
+        "How^^can^^I^^change^^my^^forgotten^^password?",
+        "What's^^the^^procedure^^to^^reset^^my^^login^^credentials?",
+        "How^^do^^I^^recover^^my^^account^^password?",
+        "What^^are^^the^^steps^^to^^reset^^my^^password?",
+        "How^^can^^I^^update^^my^^password?",
+        "What's^^the^^process^^for^^password^^recovery?",
+        "How^^do^^I^^change^^my^^account^^password?",
+        "What^^do^^I^^need^^to^^do^^to^^reset^^my^^password?",
+        "How^^can^^I^^regain^^access^^to^^my^^account?",
+        "What's^^the^^method^^to^^update^^forgotten^^password?"
+      ],
+      "answers": [
+        "To reset your password, click on the 'Forgot Password' link on the login page. Enter your email address and we'll send you a password reset link. Click the link in the email and follow the instructions to create a new password.",
+        "Navigate to the login screen and select 'Reset Password'. You'll need to verify your identity through your registered email or phone number. Once verified, you can create a new secure password for your account.",
+        "You can reset your password by going to Settings > Security > Change Password if you're logged in. If you're locked out, use the 'Forgot Password' option on the login page and follow the email verification process.",
+        "Password reset is simple: 1) Click 'Forgot Password' on login page, 2) Enter your email address, 3) Check your email for the reset link, 4) Click the link and enter your new password, 5) Confirm the change. The link expires in 24 hours for security.",
+        "If you've forgotten your password, don't worry! Visit the login page and click the password reset link. After email verification, you'll be able to set a new password. Make sure to use a strong, unique password with a mix of letters, numbers, and symbols."
+      ],
+      "tags": [
+        "password",
+        "account-security",
+        "login",
+        "authentication",
+        "password-recovery",
+        "account-access"
+      ]
+    },
+    {
+      "original_question": "ما هي طرق الدفع المتاحة؟",
+      "rephrased": {
+        "arabic": "ما هي وسائل الدفع التي يمكنني استخدامها؟",
+        "english": "What payment methods do you accept?"
+      },
+      "synonyms_arabic": [
+        "ما هي خيارات الدفع المتوفرة؟",
+        "ما الطرق التي يمكنني الدفع بها؟",
+        "ما هي وسائل الدفع المقبولة؟",
+        "كيف يمكنني الدفع؟",
+        "ما أنواع الدفع المدعومة؟",
+        "ما الطرق المتاحة لإتمام عملية الشراء؟",
+        "ما هي وسائل الدفع التي تقبلونها؟",
+        "ما خيارات الدفع الإلكتروني المتوفرة؟",
+        "ما الأساليب المتاحة للدفع؟",
+        "ما هي البطاقات المقبولة للدفع؟"
+      ],
+      "synonyms_english": [
+        "Which payment options are available?",
+        "What are the accepted payment methods?",
+        "How can I pay for my purchase?",
+        "What payment types do you support?",
+        "Which payment methods can I use?",
+        "What are the available payment options?",
+        "Which forms of payment do you accept?",
+        "What payment systems do you support?",
+        "How can I complete my payment?",
+        "What are the supported payment methods?"
+      ],
+      "synonyms_arabic_formatted": [
+        "ما^^هي^^خيارات^^الدفع^^المتوفرة؟",
+        "ما^^الطرق^^التي^^يمكنني^^الدفع^^بها؟",
+        "ما^^هي^^وسائل^^الدفع^^المقبولة؟",
+        "كيف^^يمكنني^^الدفع؟",
+        "ما^^أنواع^^الدفع^^المدعومة؟",
+        "ما^^الطرق^^المتاحة^^لإتمام^^عملية^^الشراء؟",
+        "ما^^هي^^وسائل^^الدفع^^التي^^تقبلونها؟",
+        "ما^^خيارات^^الدفع^^الإلكتروني^^المتوفرة؟",
+        "ما^^الأساليب^^المتاحة^^للدفع؟",
+        "ما^^هي^^البطاقات^^المقبولة^^للدفع؟"
+      ],
+      "synonyms_english_formatted": [
+        "Which^^payment^^options^^are^^available?",
+        "What^^are^^the^^accepted^^payment^^methods?",
+        "How^^can^^I^^pay^^for^^my^^purchase?",
+        "What^^payment^^types^^do^^you^^support?",
+        "Which^^payment^^methods^^can^^I^^use?",
+        "What^^are^^the^^available^^payment^^options?",
+        "Which^^forms^^of^^payment^^do^^you^^accept?",
+        "What^^payment^^systems^^do^^you^^support?",
+        "How^^can^^I^^complete^^my^^payment?",
+        "What^^are^^the^^supported^^payment^^methods?"
+      ],
+      "answers": [
+        "We accept all major credit cards including Visa, Mastercard, American Express, and Discover. We also support digital payment methods such as PayPal, Apple Pay, Google Pay, and bank transfers for larger purchases.",
+        "Our payment options include credit and debit cards (Visa, Mastercard, Amex), digital wallets (PayPal, Apple Pay, Google Pay), bank transfers, and select cryptocurrency payments. All transactions are secured with SSL encryption.",
+        "You can pay using various methods: credit/debit cards, PayPal, digital wallets, or direct bank transfer. We also offer installment plans through services like Klarna and Afterpay for eligible purchases over $100.",
+        "We support multiple payment methods to make your purchase convenient: Credit/Debit cards (all major brands), PayPal, Apple Pay, Google Pay, Samsung Pay, bank transfers, and cash on delivery in select regions.",
+        "Payment can be made through several secure channels: card payments (Visa, Mastercard, Amex, Discover), e-wallets (PayPal, Stripe), mobile payments (Apple Pay, Google Pay), wire transfers, and cryptocurrencies (Bitcoin, Ethereum) for orders above $500."
+      ],
+      "tags": [
+        "payment",
+        "payment-methods",
+        "checkout",
+        "billing",
+        "credit-cards",
+        "digital-wallet",
+        "purchase"
+      ]
+    }
+  ]
+}
+
+
