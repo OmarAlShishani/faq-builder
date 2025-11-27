@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FAQ Builder - AI Powered</title>
+    <title>FAQ Batch Processor</title>
     <style>
         * {
             margin: 0;
@@ -12,174 +12,170 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            background: #f5f5f7;
             min-height: 100vh;
             padding: 20px;
+            color: #1d1d1f;
+            line-height: 1.47059;
+            font-weight: 400;
+            letter-spacing: -0.022em;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            background: #ffffff;
+            border-radius: 18px;
             overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07), 0 12px 24px rgba(0, 0, 0, 0.08);
         }
 
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 30px;
+            background: #000000;
+            color: #f5f5f7;
+            padding: 48px 40px;
             text-align: center;
         }
 
         .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
+            font-size: 48px;
+            font-weight: 600;
+            letter-spacing: -0.003em;
+            margin-bottom: 8px;
         }
 
         .header p {
-            font-size: 1.1em;
-            opacity: 0.9;
+            font-size: 21px;
+            font-weight: 400;
+            color: #a1a1a6;
+            letter-spacing: 0.011em;
         }
 
         .content {
             padding: 40px;
         }
 
-        .api-key-section {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 30px;
+        .section {
+            margin-bottom: 32px;
         }
 
-        .api-key-section label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: #333;
+        .section-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 16px;
+            letter-spacing: -0.009em;
         }
 
-        .api-key-section input,
-        .api-key-section select {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 1em;
-            transition: border-color 0.3s;
-            background: white;
-        }
-
-        .api-key-section input:focus,
-        .api-key-section select:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-
-        .api-key-section small {
-            display: block;
-            margin-top: 8px;
-            color: #666;
-        }
-
-        .settings-grid {
+        .form-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-bottom: 20px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 16px;
         }
 
-        .settings-item {
+        .form-group {
             display: flex;
             flex-direction: column;
         }
 
-        @media (max-width: 768px) {
-            .settings-grid {
-                grid-template-columns: 1fr;
-            }
+        .form-group.full-width {
+            grid-column: 1 / -1;
         }
 
-        .input-section {
-            margin-bottom: 30px;
+        label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #6e6e73;
+            margin-bottom: 8px;
+            letter-spacing: -0.016em;
         }
 
-        .input-section label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: #333;
-            font-size: 1.1em;
+        input[type="text"],
+        input[type="password"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #d2d2d7;
+            border-radius: 12px;
+            font-size: 17px;
+            font-family: inherit;
+            background: #ffffff;
+            transition: all 0.2s ease;
+            color: #1d1d1f;
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #0071e3;
+            box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.1);
         }
 
         textarea {
-            width: 100%;
-            min-height: 150px;
-            padding: 15px;
-            border: 2px solid #ddd;
-            border-radius: 10px;
-            font-size: 1em;
-            font-family: inherit;
+            min-height: 120px;
             resize: vertical;
-            transition: border-color 0.3s;
-        }
-
-        textarea:focus {
-            outline: none;
-            border-color: #667eea;
+            font-family: inherit;
         }
 
         .button-group {
             display: flex;
-            gap: 15px;
-            margin-bottom: 30px;
+            gap: 12px;
+            margin-top: 24px;
         }
 
         button {
             flex: 1;
-            padding: 15px 30px;
-            font-size: 1.1em;
-            font-weight: bold;
+            padding: 16px 24px;
+            font-size: 17px;
+            font-weight: 500;
             border: none;
-            border-radius: 10px;
+            border-radius: 12px;
             cursor: pointer;
-            transition: all 0.3s;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            transition: all 0.2s ease;
+            letter-spacing: -0.022em;
+            font-family: inherit;
         }
 
-        .process-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+        .btn-primary {
+            background: #0071e3;
+            color: #ffffff;
         }
 
-        .process-btn:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        .btn-primary:hover:not(:disabled) {
+            background: #0077ed;
         }
 
-        .process-btn:disabled {
-            opacity: 0.6;
+        .btn-primary:active:not(:disabled) {
+            background: #006edb;
+        }
+
+        .btn-primary:disabled {
+            background: #d2d2d7;
             cursor: not-allowed;
         }
 
-        .clear-btn {
-            background: #e74c3c;
-            color: white;
+        .btn-secondary {
+            background: #f5f5f7;
+            color: #1d1d1f;
         }
 
-        .clear-btn:hover {
-            background: #c0392b;
-            transform: translateY(-2px);
+        .btn-secondary:hover {
+            background: #e8e8ed;
+        }
+
+        .btn-secondary:active {
+            background: #d2d2d7;
         }
 
         .loading {
             display: none;
             text-align: center;
-            padding: 20px;
+            padding: 48px;
         }
 
         .loading.active {
@@ -187,18 +183,22 @@
         }
 
         .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #667eea;
+            width: 40px;
+            height: 40px;
+            border: 3px solid #d2d2d7;
+            border-top-color: #0071e3;
             border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 15px;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 16px;
         }
 
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            font-size: 17px;
+            color: #6e6e73;
         }
 
         .results {
@@ -209,202 +209,401 @@
             display: block;
         }
 
-        .faq-item {
-            background: #f8f9fa;
-            padding: 25px;
-            border-radius: 15px;
-            margin-bottom: 25px;
-            border-left: 5px solid #667eea;
+        .question-card {
+            background: #f5f5f7;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 16px;
         }
 
-        .faq-item h3 {
-            color: #667eea;
-            margin-bottom: 20px;
-            font-size: 1.5em;
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #d2d2d7;
         }
 
-        .section {
-            margin-bottom: 20px;
+        .question-title {
+            font-size: 19px;
+            font-weight: 600;
+            color: #1d1d1f;
         }
 
-        .section-title {
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 10px;
-            font-size: 1.1em;
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .status-success {
+            background: #d5f5e3;
+            color: #1d8348;
+        }
+
+        .status-error {
+            background: #fadbd8;
+            color: #c0392b;
+        }
+
+        .status-pending {
+            background: #e8f4f8;
+            color: #1b4f72;
+        }
+
+        .status-processing {
+            background: #fcf3cf;
+            color: #7d6608;
+        }
+
+        .language-section {
+            margin-bottom: 24px;
+        }
+
+        .language-header {
+            font-size: 17px;
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
-        .section-content {
-            background: white;
-            padding: 15px;
+        .api-status-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .api-status-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background: #ffffff;
             border-radius: 8px;
-            line-height: 1.8;
-            white-space: pre-wrap;
-            word-wrap: break-word;
+            font-size: 15px;
         }
 
-        .rtl {
-            direction: rtl;
-            text-align: right;
+        .api-status-item .name {
+            color: #6e6e73;
         }
 
-        .ltr {
-            direction: ltr;
-            text-align: left;
+        .api-status-item .status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        .copy-btn {
-            background: #3498db;
-            color: white;
-            padding: 8px 15px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 0.9em;
-            margin-left: 10px;
-            transition: background 0.3s;
-        }
-
-        .copy-btn:hover {
-            background: #2980b9;
-        }
-
-        .tag {
+        .status-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
             display: inline-block;
-            background: #667eea;
-            color: white;
-            padding: 5px 12px;
-            border-radius: 20px;
-            margin: 5px;
-            font-size: 0.9em;
         }
 
-        .export-section {
-            margin-top: 30px;
+        .status-icon.success {
+            background: #34c759;
+        }
+
+        .status-icon.error {
+            background: #ff3b30;
+        }
+
+        .status-icon.pending {
+            background: #d2d2d7;
+        }
+
+        .btn-retry {
+            background: #ff9500;
+            color: #ffffff;
+            padding: 8px 16px;
+            font-size: 13px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .btn-retry:hover {
+            background: #ff9f0a;
+        }
+
+        .summary-section {
+            background: #ffffff;
+            border: 1px solid #d2d2d7;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+
+        .summary-item {
             text-align: center;
         }
 
-        .export-btn {
-            background: #27ae60;
-            color: white;
-            padding: 15px 40px;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 1.1em;
-            font-weight: bold;
-            transition: all 0.3s;
+        .summary-value {
+            font-size: 32px;
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 4px;
         }
 
-        .export-btn:hover {
-            background: #229954;
-            transform: translateY(-2px);
+        .summary-label {
+            font-size: 13px;
+            color: #6e6e73;
+        }
+
+        .divider {
+            height: 1px;
+            background: #d2d2d7;
+            margin: 32px 0;
+        }
+
+        .info-box {
+            background: #f5f5f7;
+            border-left: 3px solid #0071e3;
+            padding: 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #6e6e73;
+            margin-top: 12px;
         }
 
         @media (max-width: 768px) {
             .header h1 {
-                font-size: 1.8em;
+                font-size: 32px;
             }
 
-            .content {
-                padding: 20px;
+            .header p {
+                font-size: 17px;
+            }
+
+            .form-grid,
+            .summary-grid {
+                grid-template-columns: 1fr;
             }
 
             .button-group {
                 flex-direction: column;
             }
+
+            .content {
+                padding: 24px;
+            }
+        }
+
+        .collapsible-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .collapsible-content.open {
+            max-height: 2000px;
+        }
+
+        .toggle-btn {
+            background: none;
+            border: none;
+            color: #0071e3;
+            cursor: pointer;
+            font-size: 14px;
+            padding: 8px 0;
+            font-weight: 500;
+        }
+
+        .generated-content {
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 12px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .generated-content strong {
+            display: block;
+            margin-bottom: 8px;
+            color: #1d1d1f;
+        }
+
+        .generated-content p {
+            color: #6e6e73;
+            margin-bottom: 8px;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>🤖 FAQ Builder - AI Powered</h1>
-            <p>Transform your questions into comprehensive FAQ content</p>
+            <h1>FAQ Batch Processor</h1>
+            <p>AI-powered content generation and API integration</p>
         </div>
 
         <div class="content">
-            <div class="api-key-section">
-                <h3 style="margin-bottom: 20px; color: #667eea;">⚙️ AI Settings</h3>
-                
-                <div class="settings-grid">
-                    <div class="settings-item">
-                        <label for="aiProvider">🤖 AI Provider:</label>
+            <!-- Configuration Section -->
+            <div class="section">
+                <div class="section-title">Configuration</div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="assistantCode">Assistant Code</label>
+                        <input type="text" id="assistantCode" value="li6monObUb">
+                    </div>
+                    <div class="form-group">
+                        <label for="versionCode">Version Code</label>
+                        <input type="text" id="versionCode" value="li68VXoo7d">
+                    </div>
+                    <div class="form-group">
+                        <label for="faqId">FAQ ID *</label>
+                        <input type="text" id="faqId" placeholder="Enter FAQ ID" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="jwt">JWT Token *</label>
+                        <input type="password" id="jwt" placeholder="Enter JWT Token" required>
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="baseURL">API Base URL</label>
+                        <input type="text" id="baseURL" value="https://localhost:8443" placeholder="https://localhost:8443">
+                    </div>
+                </div>
+                <div class="info-box">
+                    JWT token will be stored in localStorage for future sessions.
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- AI Settings Section -->
+            <div class="section">
+                <div class="section-title">AI Settings</div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="aiProvider">AI Provider</label>
                         <select id="aiProvider" onchange="updateProviderSettings()">
                             <option value="gemini">Google Gemini (Recommended)</option>
                             <option value="openai">OpenAI</option>
                             <option value="openrouter">OpenRouter</option>
                         </select>
                     </div>
-
-                    <div class="settings-item">
-                        <label for="aiModel">🎯 Model:</label>
+                    <div class="form-group">
+                        <label for="aiModel">Model</label>
                         <select id="aiModel">
-                            <option value="gemini-2.0-flash">Gemini 2.0 Flash (Latest & Recommended)</option>
-                            <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>
-                            <option value="gemini-1.5-pro">Gemini 1.5 Pro</option>
-                            <option value="gemini-1.0-pro">Gemini 1.0 Pro</option>
+                            <option value="gemini-2.0-flash">Gemini 2.0 Flash</option>
                         </select>
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="apiKey">API Key *</label>
+                        <input type="password" id="apiKey" placeholder="Enter your AI API key" required>
+                        <div class="info-box" id="apiKeyHelp" style="margin-top: 8px;">
+                            Get your key from <a href="https://makersuite.google.com/app/apikey" target="_blank" style="color: #0071e3;">Google AI Studio</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- AI Instructions Section -->
+            <div class="section">
+                <div class="section-title">AI Instructions</div>
+                <div class="form-group">
+                    <label for="aiInstructions">Category / Context Instructions (Optional)</label>
+                    <textarea id="aiInstructions" placeholder="Example: These questions are about an e-commerce platform's payment and shipping services. Focus on customer support and technical assistance.&#10;&#10;مثال: هذه الأسئلة تتعلق بخدمات الدفع والشحن في متجر إلكتروني. ركز على دعم العملاء والمساعدة التقنية." style="min-height: 80px;"></textarea>
+                    <div class="info-box" style="margin-top: 8px;">
+                        Provide context or category information to help AI generate more accurate and relevant content.
+                    </div>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- Questions Input Section -->
+            <div class="section">
+                <div class="section-title">Questions Input</div>
+                <div class="form-group">
+                    <label for="questions">Enter FAQ Questions (one per line)</label>
+                    <textarea id="questions" placeholder="How do I reset my password?&#10;كيف أقوم بإعادة تعيين كلمة المرور؟&#10;What payment methods do you accept?"></textarea>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="button-group">
+                <button class="btn-primary" onclick="processQuestions()">Process Questions</button>
+                <button class="btn-secondary" onclick="clearAll()">Clear All</button>
+            </div>
+
+            <!-- Loading State -->
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <div class="loading-text">Processing questions and sending to API...</div>
+            </div>
+
+            <!-- Results Section -->
+            <div class="results" id="results">
+                <div class="divider"></div>
+                <div class="section-title">Processing Results</div>
+                
+                <div class="summary-section" id="summary">
+                    <div class="summary-grid">
+                        <div class="summary-item">
+                            <div class="summary-value" id="totalQuestions">0</div>
+                            <div class="summary-label">Total Questions</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="summary-value" id="successCount">0</div>
+                            <div class="summary-label">Successful</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="summary-value" id="errorCount">0</div>
+                            <div class="summary-label">Failed</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="summary-value" id="totalAPICalls">0</div>
+                            <div class="summary-label">Total API Calls</div>
+                        </div>
                     </div>
                 </div>
 
-                <div style="margin-top: 15px;">
-                    <label for="apiKey">🔑 API Key:</label>
-                    <input type="password" id="apiKey" placeholder="Enter your Google Gemini API key">
-                    <small id="apiKeyHelp">Your API key is stored locally and never sent anywhere except to gemini. <a href="https://makersuite.google.com/app/apikey" target="_blank">Get your key from Google AI Studio</a></small>
+                <div id="questionResults"></div>
+
+                <div class="button-group">
+                    <button class="btn-primary" onclick="retryAllFailed()">Retry All Failed</button>
+                    <button class="btn-secondary" onclick="exportResults()">Export Report</button>
                 </div>
-            </div>
-
-            <div class="input-section">
-                <label for="questions">📝 Enter FAQ Questions (One per line):</label>
-                <textarea id="questions" placeholder="Enter your questions here, one per line...&#10;Example:&#10;How do I reset my password?&#10;كيف يمكنني إعادة تعيين كلمة المرور؟&#10;What payment methods do you accept?"></textarea>
-            </div>
-
-            <div class="button-group">
-                <button class="process-btn" onclick="processQuestions()">🚀 Process Questions</button>
-                <button class="clear-btn" onclick="clearAll()">🗑️ Clear All</button>
-            </div>
-
-            <div class="loading" id="loading">
-                <div class="spinner"></div>
-                <p>Processing your questions with AI... This may take a moment.</p>
-            </div>
-
-            <div class="results" id="results"></div>
-
-            <div class="export-section" id="exportSection" style="display: none;">
-                <button class="export-btn" onclick="exportToJSON()">💾 Export to JSON</button>
             </div>
         </div>
     </div>
 
     <script>
-        let processedData = [];
+        // Global state
+        let processedQuestions = [];
+        let baseURL = 'https://localhost:8443';
 
-        // Model configurations for different providers
+        // Model configurations
         const providerModels = {
             openai: [
                 { value: 'gpt-4o-mini', label: 'GPT-4o Mini (Recommended)' },
                 { value: 'gpt-4o', label: 'GPT-4o' },
-                { value: 'gpt-4-turbo', label: 'GPT-4 Turbo' },
-                { value: 'gpt-3.5-turbo', label: 'GPT-3.5 Turbo' }
+                { value: 'gpt-4-turbo', label: 'GPT-4 Turbo' }
             ],
             gemini: [
-                { value: 'gemini-2.0-flash', label: 'Gemini 2.0 Flash (Latest & Recommended)' },
+                { value: 'gemini-2.0-flash', label: 'Gemini 2.0 Flash (Latest)' },
                 { value: 'gemini-1.5-flash', label: 'Gemini 1.5 Flash' },
-                { value: 'gemini-1.5-pro', label: 'Gemini 1.5 Pro' },
-                { value: 'gemini-1.0-pro', label: 'Gemini 1.0 Pro' }
+                { value: 'gemini-1.5-pro', label: 'Gemini 1.5 Pro' }
             ],
             openrouter: [
                 { value: 'openai/gpt-4o-mini', label: 'OpenAI GPT-4o Mini' },
-                { value: 'openai/gpt-4o', label: 'OpenAI GPT-4o' },
-                { value: 'anthropic/claude-3.5-sonnet', label: 'Claude 3.5 Sonnet' },
                 { value: 'google/gemini-pro-1.5', label: 'Gemini Pro 1.5' },
-                { value: 'meta-llama/llama-3.1-70b-instruct', label: 'Llama 3.1 70B' },
-                { value: 'mistralai/mistral-large', label: 'Mistral Large' }
+                { value: 'anthropic/claude-3.5-sonnet', label: 'Claude 3.5 Sonnet' }
             ]
         };
 
@@ -428,6 +627,11 @@
             const savedProvider = localStorage.getItem('ai_provider') || 'gemini';
             const savedModel = localStorage.getItem('ai_model');
             const savedApiKey = localStorage.getItem('api_key');
+            const savedJWT = localStorage.getItem('jwt_token');
+            const savedAssistantCode = localStorage.getItem('assistant_code');
+            const savedVersionCode = localStorage.getItem('version_code');
+            const savedBaseURL = localStorage.getItem('base_url');
+            const savedInstructions = localStorage.getItem('ai_instructions');
 
             document.getElementById('aiProvider').value = savedProvider;
             updateProviderSettings();
@@ -439,6 +643,26 @@
             if (savedApiKey) {
                 document.getElementById('apiKey').value = savedApiKey;
             }
+
+            if (savedJWT) {
+                document.getElementById('jwt').value = savedJWT;
+            }
+
+            if (savedAssistantCode) {
+                document.getElementById('assistantCode').value = savedAssistantCode;
+            }
+
+            if (savedVersionCode) {
+                document.getElementById('versionCode').value = savedVersionCode;
+            }
+
+            if (savedBaseURL) {
+                document.getElementById('baseURL').value = savedBaseURL;
+            }
+
+            if (savedInstructions) {
+                document.getElementById('aiInstructions').value = savedInstructions;
+            }
         });
 
         function updateProviderSettings() {
@@ -446,7 +670,6 @@
             const modelSelect = document.getElementById('aiModel');
             const helpText = document.getElementById('apiKeyHelp');
 
-            // Update models dropdown
             modelSelect.innerHTML = '';
             providerModels[provider].forEach(model => {
                 const option = document.createElement('option');
@@ -455,96 +678,168 @@
                 modelSelect.appendChild(option);
             });
 
-            // Update help text
             const info = providerInfo[provider];
-            helpText.innerHTML = `Your API key is stored locally and never sent anywhere except to ${provider}. <a href="${info.url}" target="_blank">${info.text}</a>`;
+            helpText.innerHTML = `Get your key from <a href="${info.url}" target="_blank" style="color: #0071e3;">${info.text}</a>`;
 
-            // Save provider preference
             localStorage.setItem('ai_provider', provider);
         }
 
         async function processQuestions() {
+            // Validate inputs
+            const assistantCode = document.getElementById('assistantCode').value.trim();
+            const versionCode = document.getElementById('versionCode').value.trim();
+            const faqId = document.getElementById('faqId').value.trim();
+            const jwt = document.getElementById('jwt').value.trim();
             const apiKey = document.getElementById('apiKey').value.trim();
-            const provider = document.getElementById('aiProvider').value;
-            const model = document.getElementById('aiModel').value;
             const questionsText = document.getElementById('questions').value.trim();
 
-            if (!apiKey) {
-                alert('Please enter your API key!');
+            if (!assistantCode || !versionCode || !faqId || !jwt || !apiKey || !questionsText) {
+                alert('Please fill in all required fields!');
                 return;
             }
 
-            if (!questionsText) {
-                alert('Please enter at least one question!');
-                return;
-            }
+            // Get base URL and instructions
+            baseURL = document.getElementById('baseURL').value.trim();
+            const aiInstructions = document.getElementById('aiInstructions').value.trim();
 
-            // Save settings to localStorage
+            // Save to localStorage
+            localStorage.setItem('jwt_token', jwt);
+            localStorage.setItem('assistant_code', assistantCode);
+            localStorage.setItem('version_code', versionCode);
+            localStorage.setItem('base_url', baseURL);
             localStorage.setItem('api_key', apiKey);
-            localStorage.setItem('ai_provider', provider);
-            localStorage.setItem('ai_model', model);
+            localStorage.setItem('ai_provider', document.getElementById('aiProvider').value);
+            localStorage.setItem('ai_model', document.getElementById('aiModel').value);
+            localStorage.setItem('ai_instructions', aiInstructions);
 
             const questions = questionsText.split('\n').filter(q => q.trim() !== '');
             
             const loading = document.getElementById('loading');
             const results = document.getElementById('results');
-            const processBtn = document.querySelector('.process-btn');
 
             loading.classList.add('active');
             results.classList.remove('active');
-            processBtn.disabled = true;
 
-            processedData = [];
+            processedQuestions = [];
 
             try {
-                for (const question of questions) {
-                    const result = await processQuestion(question, apiKey, provider, model);
-                    processedData.push(result);
+                for (let i = 0; i < questions.length; i++) {
+                    const question = questions[i].trim();
+                    const questionData = await processQuestion(question, i + 1, aiInstructions);
+                    processedQuestions.push(questionData);
                 }
 
-                displayResults(processedData);
-                document.getElementById('exportSection').style.display = 'block';
+                displayResults();
             } catch (error) {
                 alert('Error processing questions: ' + error.message);
                 console.error(error);
             } finally {
                 loading.classList.remove('active');
-                processBtn.disabled = false;
+                results.classList.add('active');
             }
         }
 
-        async function processQuestion(question, apiKey, provider, model) {
-            const prompt = `Given this FAQ question: "${question}"
+        async function processQuestion(question, index, instructions = '') {
+            const provider = document.getElementById('aiProvider').value;
+            const model = document.getElementById('aiModel').value;
+            const apiKey = document.getElementById('apiKey').value;
 
-Please provide a comprehensive response in the following JSON format:
+            // Detect language
+            const isArabic = /[\u0600-\u06FF]/.test(question);
+            
+            const questionData = {
+                index: index,
+                originalQuestion: question,
+                arabic: {
+                    question: '',
+                    questionId: null,
+                    tag: '',
+                    synonyms: [],
+                    responses: [],
+                    apiCalls: {
+                        createQuestion: { status: 'pending', error: null },
+                        addTag: { status: 'pending', error: null },
+                        addSynonyms: [],
+                        addResponses: []
+                    }
+                },
+                english: {
+                    question: '',
+                    questionId: null,
+                    tag: '',
+                    synonyms: [],
+                    responses: [],
+                    apiCalls: {
+                        createQuestion: { status: 'pending', error: null },
+                        addTag: { status: 'pending', error: null },
+                        addSynonyms: [],
+                        addResponses: []
+                    }
+                }
+            };
+
+            // Generate AI content
+            const aiContent = await generateAIContent(question, provider, model, apiKey, instructions);
+            
+            // Assign generated content
+            questionData.arabic.question = aiContent.arabic.question;
+            questionData.arabic.tag = aiContent.arabic.tag;
+            questionData.arabic.synonyms = aiContent.arabic.synonyms;
+            questionData.arabic.responses = aiContent.arabic.responses;
+
+            questionData.english.question = aiContent.english.question;
+            questionData.english.tag = aiContent.english.tag;
+            questionData.english.synonyms = aiContent.english.synonyms;
+            questionData.english.responses = aiContent.english.responses;
+
+            // Initialize API call statuses
+            for (let i = 0; i < 10; i++) {
+                questionData.arabic.apiCalls.addSynonyms.push({ status: 'pending', error: null });
+                questionData.english.apiCalls.addSynonyms.push({ status: 'pending', error: null });
+            }
+            for (let i = 0; i < 2; i++) {
+                questionData.arabic.apiCalls.addResponses.push({ status: 'pending', error: null });
+                questionData.english.apiCalls.addResponses.push({ status: 'pending', error: null });
+            }
+
+            // Process Arabic (languageId = 1)
+            await processLanguage(questionData, 'arabic', 1);
+
+            // Process English (languageId = 2)
+            await processLanguage(questionData, 'english', 2);
+
+            return questionData;
+        }
+
+        async function generateAIContent(question, provider, model, apiKey, instructions = '') {
+            const contextSection = instructions ? `\n\nContext/Category Information:\n${instructions}\n` : '';
+            
+            const prompt = `Given this FAQ question: "${question}"${contextSection}
+
+Please provide a response in the following JSON format:
 
 {
-  "original_question": "${question}",
-  "rephrased": {
-    "arabic": "rephrased question in Arabic",
-    "english": "rephrased question in English"
+  "arabic": {
+    "question": "the question in Arabic (clear and professional)",
+    "tag": "one relevant tag in Arabic",
+    "synonyms": ["synonym1", "synonym2", ... exactly 10 synonyms in Arabic],
+    "responses": ["detailed response 1 in Arabic", "detailed response 2 in Arabic"]
   },
-  "synonyms_arabic": ["synonym1", "synonym2", ... "synonym10"],
-  "synonyms_english": ["synonym1", "synonym2", ... "synonym10"],
-  "synonyms_arabic_formatted": ["synonym1^^with^^double^^caret", ... ],
-  "synonyms_english_formatted": ["synonym1^^with^^double^^caret", ... ],
-  "answers": [
-    "detailed answer 1",
-    "detailed answer 2",
-    "detailed answer 3",
-    "detailed answer 4",
-    "detailed answer 5"
-  ],
-  "tags": ["tag1", "tag2", "tag3", "tag4", "tag5"]
+  "english": {
+    "question": "the question in English (clear and professional)",
+    "tag": "one relevant tag in English",
+    "synonyms": ["synonym1", "synonym2", ... exactly 10 synonyms in English],
+    "responses": ["detailed response 1 in English", "detailed response 2 in English"]
+  }
 }
 
 Requirements:
-1. Rephrase the question in both Arabic and English (clear and professional)
-2. Create 10 synonyms/alternative phrasings for the question in Arabic
-3. Create 10 synonyms/alternative phrasings for the question in English
-4. For formatted synonyms, replace spaces with ^^ (double caret)
-5. Generate 5 comprehensive, helpful answers to the question
-6. Create 5-7 relevant tags for this question
+1. Provide the question in both Arabic and English
+2. Generate exactly 1 tag for each language (relevant category/topic)
+3. Generate exactly 10 alternative phrasings/synonyms for the question in each language
+4. Generate exactly 2 comprehensive, helpful responses in each language
+5. All responses must be properly formatted and ready for API submission
+6. ${instructions ? 'IMPORTANT: Take into account the provided context/category information when generating content to ensure relevance and accuracy.' : 'Generate content that is clear, professional, and helpful.'}
 
 Please respond ONLY with the JSON object, no additional text.`;
 
@@ -560,14 +855,8 @@ Please respond ONLY with the JSON object, no additional text.`;
                     body: JSON.stringify({
                         model: model,
                         messages: [
-                            {
-                                role: 'system',
-                                content: 'You are a helpful FAQ assistant that generates comprehensive, bilingual FAQ content. Always respond with valid JSON.'
-                            },
-                            {
-                                role: 'user',
-                                content: prompt
-                            }
+                            { role: 'system', content: 'You are a helpful FAQ assistant. Always respond with valid JSON.' },
+                            { role: 'user', content: prompt }
                         ],
                         temperature: 0.7,
                         max_tokens: 3000
@@ -592,7 +881,7 @@ Please respond ONLY with the JSON object, no additional text.`;
                     body: JSON.stringify({
                         contents: [{
                             parts: [{
-                                text: `You are a helpful FAQ assistant that generates comprehensive, bilingual FAQ content. Always respond with valid JSON.\n\n${prompt}`
+                                text: `You are a helpful FAQ assistant. Always respond with valid JSON.\n\n${prompt}`
                             }]
                         }],
                         generationConfig: {
@@ -617,19 +906,13 @@ Please respond ONLY with the JSON object, no additional text.`;
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${apiKey}`,
                         'HTTP-Referer': window.location.href,
-                        'X-Title': 'FAQ Builder Tool'
+                        'X-Title': 'FAQ Batch Processor'
                     },
                     body: JSON.stringify({
                         model: model,
                         messages: [
-                            {
-                                role: 'system',
-                                content: 'You are a helpful FAQ assistant that generates comprehensive, bilingual FAQ content. Always respond with valid JSON.'
-                            },
-                            {
-                                role: 'user',
-                                content: prompt
-                            }
+                            { role: 'system', content: 'You are a helpful FAQ assistant. Always respond with valid JSON.' },
+                            { role: 'user', content: prompt }
                         ],
                         temperature: 0.7,
                         max_tokens: 3000
@@ -648,122 +931,363 @@ Please respond ONLY with the JSON object, no additional text.`;
             // Extract JSON from response
             let jsonMatch = content.match(/\{[\s\S]*\}/);
             if (!jsonMatch) {
-                throw new Error('Invalid JSON response from API');
+                throw new Error('Invalid JSON response from AI');
             }
 
             return JSON.parse(jsonMatch[0]);
         }
 
-        function displayResults(data) {
-            const resultsDiv = document.getElementById('results');
+        async function processLanguage(questionData, lang, languageId) {
+            const assistantCode = document.getElementById('assistantCode').value.trim();
+            const versionCode = document.getElementById('versionCode').value.trim();
+            const faqId = document.getElementById('faqId').value.trim();
+            const jwt = document.getElementById('jwt').value.trim();
+
+            const langData = questionData[lang];
+
+            // Step 1: Create Question
+            try {
+                const createResult = await createQuestion(
+                    assistantCode,
+                    versionCode,
+                    faqId,
+                    languageId,
+                    langData.question,
+                    jwt
+                );
+                langData.questionId = createResult.createdId;
+                langData.apiCalls.createQuestion.status = 'success';
+            } catch (error) {
+                langData.apiCalls.createQuestion.status = 'error';
+                langData.apiCalls.createQuestion.error = error.message;
+                return; // Stop if question creation fails
+            }
+
+            // Step 2: Add Tag
+            try {
+                await addTag(assistantCode, versionCode, faqId, languageId, langData.questionId, langData.tag, jwt);
+                langData.apiCalls.addTag.status = 'success';
+            } catch (error) {
+                langData.apiCalls.addTag.status = 'error';
+                langData.apiCalls.addTag.error = error.message;
+            }
+
+            // Step 3: Add Synonyms (10)
+            for (let i = 0; i < langData.synonyms.length; i++) {
+                try {
+                    await addSynonym(assistantCode, versionCode, faqId, languageId, langData.questionId, langData.synonyms[i], jwt);
+                    langData.apiCalls.addSynonyms[i].status = 'success';
+                } catch (error) {
+                    langData.apiCalls.addSynonyms[i].status = 'error';
+                    langData.apiCalls.addSynonyms[i].error = error.message;
+                }
+            }
+
+            // Step 4: Add Responses (2)
+            for (let i = 0; i < langData.responses.length; i++) {
+                try {
+                    await addResponse(assistantCode, versionCode, faqId, languageId, langData.questionId, langData.responses[i], jwt);
+                    langData.apiCalls.addResponses[i].status = 'success';
+                } catch (error) {
+                    langData.apiCalls.addResponses[i].status = 'error';
+                    langData.apiCalls.addResponses[i].error = error.message;
+                }
+            }
+        }
+
+        // API Functions
+        async function createQuestion(assistantCode, versionCode, faqId, languageId, question, jwt) {
+            const url = `${baseURL}/api/knowledge_ai/${assistantCode}/${versionCode}/faq/${faqId}/${languageId}/question`;
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${jwt}`
+                },
+                body: JSON.stringify({ question: question })
+            });
+
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.message || 'Failed to create question');
+            }
+
+            return await response.json();
+        }
+
+        async function addTag(assistantCode, versionCode, faqId, languageId, questionId, tag, jwt) {
+            const url = `${baseURL}/api/knowledge_ai/${assistantCode}/${versionCode}/faq/${faqId}/${languageId}/question/${questionId}/tag`;
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${jwt}`
+                },
+                body: JSON.stringify({ tag: tag })
+            });
+
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.message || 'Failed to add tag');
+            }
+
+            return await response.json();
+        }
+
+        async function addSynonym(assistantCode, versionCode, faqId, languageId, questionId, synonym, jwt) {
+            const url = `${baseURL}/api/knowledge_ai/${assistantCode}/${versionCode}/faq/${faqId}/${languageId}/question/${questionId}/synonym`;
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${jwt}`
+                },
+                body: JSON.stringify({ questionSynonym: synonym })
+            });
+
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.message || 'Failed to add synonym');
+            }
+
+            return await response.json();
+        }
+
+        async function addResponse(assistantCode, versionCode, faqId, languageId, questionId, message, jwt) {
+            const url = `${baseURL}/api/knowledge_ai/${assistantCode}/${versionCode}/faq/${faqId}/${languageId}/question/${questionId}/short_messages`;
+            
+            // Escape the message text
+            const escapedMessage = message.replace(/\n/g, '\\n').replace(/"/g, '\\"');
+            
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${jwt}`
+                },
+                body: JSON.stringify({ messageText: escapedMessage })
+            });
+
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.message || 'Failed to add response');
+            }
+
+            return await response.json();
+        }
+
+        function displayResults() {
+            const resultsDiv = document.getElementById('questionResults');
             let html = '';
 
-            data.forEach((item, index) => {
+            let totalSuccess = 0;
+            let totalError = 0;
+            let totalAPICalls = 0;
+
+            processedQuestions.forEach((q, index) => {
+                const arabicStatus = getLanguageStatus(q.arabic);
+                const englishStatus = getLanguageStatus(q.english);
+                
+                totalSuccess += arabicStatus.success + englishStatus.success;
+                totalError += arabicStatus.error + englishStatus.error;
+                totalAPICalls += arabicStatus.total + englishStatus.total;
+
+                const overallStatus = (arabicStatus.error === 0 && englishStatus.error === 0) ? 'success' : 
+                                     (arabicStatus.total === arabicStatus.error && englishStatus.total === englishStatus.error) ? 'error' : 'partial';
+
                 html += `
-                    <div class="faq-item">
-                        <h3>Question ${index + 1}</h3>
-                        
-                        <div class="section">
-                            <div class="section-title">
-                                📌 Original Question
-                                <button class="copy-btn" onclick="copyToClipboard('${escapeHtml(item.original_question)}')">Copy</button>
-                            </div>
-                            <div class="section-content ${detectDirection(item.original_question)}">
-                                ${escapeHtml(item.original_question)}
-                            </div>
+                    <div class="question-card">
+                        <div class="question-header">
+                            <div class="question-title">Question ${q.index}: ${q.originalQuestion.substring(0, 60)}...</div>
+                            <span class="status-badge status-${overallStatus === 'success' ? 'success' : overallStatus === 'error' ? 'error' : 'pending'}">
+                                ${overallStatus === 'success' ? '✓ Complete' : overallStatus === 'error' ? '✗ Failed' : '⚠ Partial'}
+                            </span>
                         </div>
 
-                        <div class="section">
-                            <div class="section-title">
-                                🔄 Rephrased - Arabic
-                                <button class="copy-btn" onclick="copyToClipboard('${escapeHtml(item.rephrased.arabic)}')">Copy</button>
-                            </div>
-                            <div class="section-content rtl">
-                                ${escapeHtml(item.rephrased.arabic)}
-                            </div>
-                        </div>
-
-                        <div class="section">
-                            <div class="section-title">
-                                🔄 Rephrased - English
-                                <button class="copy-btn" onclick="copyToClipboard('${escapeHtml(item.rephrased.english)}')">Copy</button>
-                            </div>
-                            <div class="section-content ltr">
-                                ${escapeHtml(item.rephrased.english)}
-                            </div>
-                        </div>
-
-                        <div class="section">
-                            <div class="section-title">
-                                🔤 Synonyms - Arabic (10)
-                                <button class="copy-btn" onclick="copyToClipboard('${escapeHtml(item.synonyms_arabic.join('\\n'))}')">Copy</button>
-                            </div>
-                            <div class="section-content rtl">
-                                ${item.synonyms_arabic.map((s, i) => `${i + 1}. ${escapeHtml(s)}`).join('\n')}
-                            </div>
-                        </div>
-
-                        <div class="section">
-                            <div class="section-title">
-                                🔤 Synonyms - English (10)
-                                <button class="copy-btn" onclick="copyToClipboard('${escapeHtml(item.synonyms_english.join('\\n'))}')">Copy</button>
-                            </div>
-                            <div class="section-content ltr">
-                                ${item.synonyms_english.map((s, i) => `${i + 1}. ${escapeHtml(s)}`).join('\n')}
-                            </div>
-                        </div>
-
-                        <div class="section">
-                            <div class="section-title">
-                                ^^🔤 Formatted Synonyms - Arabic (with ^^)
-                                <button class="copy-btn" onclick="copyToClipboard('${escapeHtml(item.synonyms_arabic_formatted.join('\\n'))}')">Copy</button>
-                            </div>
-                            <div class="section-content rtl">
-                                ${item.synonyms_arabic_formatted.map((s, i) => `${i + 1}. ${escapeHtml(s)}`).join('\n')}
-                            </div>
-                        </div>
-
-                        <div class="section">
-                            <div class="section-title">
-                                ^^🔤 Formatted Synonyms - English (with ^^)
-                                <button class="copy-btn" onclick="copyToClipboard('${escapeHtml(item.synonyms_english_formatted.join('\\n'))}')">Copy</button>
-                            </div>
-                            <div class="section-content ltr">
-                                ${item.synonyms_english_formatted.map((s, i) => `${i + 1}. ${escapeHtml(s)}`).join('\n')}
-                            </div>
-                        </div>
-
-                        <div class="section">
-                            <div class="section-title">
-                                💡 Answers (5)
-                                <button class="copy-btn" onclick="copyToClipboard('${escapeHtml(item.answers.join('\\n\\n---\\n\\n'))}')">Copy</button>
-                            </div>
-                            <div class="section-content">
-                                ${item.answers.map((a, i) => `<strong>Answer ${i + 1}:</strong><br>${escapeHtml(a)}`).join('<br><br>')}
-                            </div>
-                        </div>
-
-                        <div class="section">
-                            <div class="section-title">
-                                🏷️ Tags
-                                <button class="copy-btn" onclick="copyToClipboard('${escapeHtml(item.tags.join(', '))}')">Copy</button>
-                            </div>
-                            <div class="section-content">
-                                ${item.tags.map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('')}
-                            </div>
-                        </div>
+                        ${renderLanguageSection(q, 'arabic', 'Arabic', index)}
+                        ${renderLanguageSection(q, 'english', 'English', index)}
                     </div>
                 `;
             });
 
             resultsDiv.innerHTML = html;
-            resultsDiv.classList.add('active');
-            resultsDiv.scrollIntoView({ behavior: 'smooth' });
+
+            // Update summary
+            document.getElementById('totalQuestions').textContent = processedQuestions.length;
+            document.getElementById('successCount').textContent = Math.floor(totalSuccess / totalAPICalls * processedQuestions.length * 2);
+            document.getElementById('errorCount').textContent = processedQuestions.length * 2 - Math.floor(totalSuccess / totalAPICalls * processedQuestions.length * 2);
+            document.getElementById('totalAPICalls').textContent = totalAPICalls;
         }
 
-        function detectDirection(text) {
-            const arabicPattern = /[\u0600-\u06FF]/;
-            return arabicPattern.test(text) ? 'rtl' : 'ltr';
+        function renderLanguageSection(q, lang, langName, qIndex) {
+            const langData = q[lang];
+            const calls = langData.apiCalls;
+
+            let html = `
+                <div class="language-section">
+                    <div class="language-header">
+                        ${langName} (Language ID: ${lang === 'arabic' ? 1 : 2})
+                        <button class="toggle-btn" onclick="toggleContent('content-${qIndex}-${lang}')">Show Details</button>
+                    </div>
+                    <div class="collapsible-content" id="content-${qIndex}-${lang}">
+                        <div class="generated-content">
+                            <strong>Question:</strong>
+                            <p>${escapeHtml(langData.question)}</p>
+                            <strong>Tag:</strong>
+                            <p>${escapeHtml(langData.tag)}</p>
+                            <strong>Synonyms (10):</strong>
+                            <p>${langData.synonyms.map((s, i) => `${i+1}. ${escapeHtml(s)}`).join('<br>')}</p>
+                            <strong>Responses (2):</strong>
+                            <p>${langData.responses.map((r, i) => `${i+1}. ${escapeHtml(r)}`).join('<br><br>')}</p>
+                        </div>
+                        <div class="api-status-list">
+                            ${renderAPIStatus('Create Question', calls.createQuestion, qIndex, lang, 'createQuestion')}
+                            ${renderAPIStatus('Add Tag', calls.addTag, qIndex, lang, 'addTag')}
+                            ${calls.addSynonyms.map((s, i) => renderAPIStatus(`Add Synonym ${i+1}`, s, qIndex, lang, 'addSynonyms', i)).join('')}
+                            ${calls.addResponses.map((r, i) => renderAPIStatus(`Add Response ${i+1}`, r, qIndex, lang, 'addResponses', i)).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            return html;
+        }
+
+        function renderAPIStatus(name, status, qIndex, lang, type, subIndex = null) {
+            const statusClass = status.status === 'success' ? 'success' : status.status === 'error' ? 'error' : 'pending';
+            const retryBtn = status.status === 'error' ? `<button class="btn-retry" onclick="retryAPICall(${qIndex}, '${lang}', '${type}', ${subIndex})">Retry</button>` : '';
+            
+            return `
+                <div class="api-status-item">
+                    <span class="name">${name}</span>
+                    <div class="status">
+                        <span class="status-icon ${statusClass}"></span>
+                        <span>${status.status === 'success' ? 'Success' : status.status === 'error' ? 'Failed' : 'Pending'}</span>
+                        ${retryBtn}
+                    </div>
+                </div>
+            `;
+        }
+
+        function getLanguageStatus(langData) {
+            let success = 0;
+            let error = 0;
+            let total = 0;
+
+            const checkStatus = (call) => {
+                total++;
+                if (call.status === 'success') success++;
+                if (call.status === 'error') error++;
+            };
+
+            checkStatus(langData.apiCalls.createQuestion);
+            checkStatus(langData.apiCalls.addTag);
+            langData.apiCalls.addSynonyms.forEach(checkStatus);
+            langData.apiCalls.addResponses.forEach(checkStatus);
+
+            return { success, error, total };
+        }
+
+        function toggleContent(id) {
+            const content = document.getElementById(id);
+            content.classList.toggle('open');
+        }
+
+        async function retryAPICall(qIndex, lang, type, subIndex = null) {
+            const question = processedQuestions[qIndex];
+            const langData = question[lang];
+            const languageId = lang === 'arabic' ? 1 : 2;
+
+            const assistantCode = document.getElementById('assistantCode').value.trim();
+            const versionCode = document.getElementById('versionCode').value.trim();
+            const faqId = document.getElementById('faqId').value.trim();
+            const jwt = document.getElementById('jwt').value.trim();
+
+            try {
+                if (type === 'createQuestion') {
+                    const result = await createQuestion(assistantCode, versionCode, faqId, languageId, langData.question, jwt);
+                    langData.questionId = result.createdId;
+                    langData.apiCalls.createQuestion.status = 'success';
+                    langData.apiCalls.createQuestion.error = null;
+                } else if (type === 'addTag') {
+                    await addTag(assistantCode, versionCode, faqId, languageId, langData.questionId, langData.tag, jwt);
+                    langData.apiCalls.addTag.status = 'success';
+                    langData.apiCalls.addTag.error = null;
+                } else if (type === 'addSynonyms') {
+                    await addSynonym(assistantCode, versionCode, faqId, languageId, langData.questionId, langData.synonyms[subIndex], jwt);
+                    langData.apiCalls.addSynonyms[subIndex].status = 'success';
+                    langData.apiCalls.addSynonyms[subIndex].error = null;
+                } else if (type === 'addResponses') {
+                    await addResponse(assistantCode, versionCode, faqId, languageId, langData.questionId, langData.responses[subIndex], jwt);
+                    langData.apiCalls.addResponses[subIndex].status = 'success';
+                    langData.apiCalls.addResponses[subIndex].error = null;
+                }
+
+                displayResults();
+            } catch (error) {
+                alert('Retry failed: ' + error.message);
+            }
+        }
+
+        async function retryAllFailed() {
+            if (!confirm('Retry all failed API calls?')) return;
+
+            for (let qIndex = 0; qIndex < processedQuestions.length; qIndex++) {
+                const question = processedQuestions[qIndex];
+
+                for (const lang of ['arabic', 'english']) {
+                    const langData = question[lang];
+                    const calls = langData.apiCalls;
+
+                    if (calls.createQuestion.status === 'error') {
+                        await retryAPICall(qIndex, lang, 'createQuestion');
+                    }
+                    if (calls.addTag.status === 'error') {
+                        await retryAPICall(qIndex, lang, 'addTag');
+                    }
+                    for (let i = 0; i < calls.addSynonyms.length; i++) {
+                        if (calls.addSynonyms[i].status === 'error') {
+                            await retryAPICall(qIndex, lang, 'addSynonyms', i);
+                        }
+                    }
+                    for (let i = 0; i < calls.addResponses.length; i++) {
+                        if (calls.addResponses[i].status === 'error') {
+                            await retryAPICall(qIndex, lang, 'addResponses', i);
+                        }
+                    }
+                }
+            }
+
+            alert('Retry complete!');
+        }
+
+        function exportResults() {
+            const exportData = {
+                timestamp: new Date().toISOString(),
+                configuration: {
+                    assistantCode: document.getElementById('assistantCode').value,
+                    versionCode: document.getElementById('versionCode').value,
+                    faqId: document.getElementById('faqId').value
+                },
+                questions: processedQuestions
+            };
+
+            const dataStr = JSON.stringify(exportData, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `faq-batch-report-${Date.now()}.json`;
+            link.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function clearAll() {
+            if (confirm('Clear all data and results?')) {
+                document.getElementById('questions').value = '';
+                document.getElementById('results').classList.remove('active');
+                processedQuestions = [];
+            }
         }
 
         function escapeHtml(text) {
@@ -776,54 +1300,6 @@ Please respond ONLY with the JSON object, no additional text.`;
             };
             return String(text).replace(/[&<>"']/g, m => map[m]);
         }
-
-        function copyToClipboard(text) {
-            // Unescape the text
-            const textarea = document.createElement('textarea');
-            textarea.innerHTML = text;
-            const unescapedText = textarea.value;
-
-            navigator.clipboard.writeText(unescapedText).then(() => {
-                alert('Copied to clipboard!');
-            }).catch(err => {
-                console.error('Failed to copy:', err);
-            });
-        }
-
-        function clearAll() {
-            if (confirm('Are you sure you want to clear all data?')) {
-                document.getElementById('questions').value = '';
-                document.getElementById('results').innerHTML = '';
-                document.getElementById('results').classList.remove('active');
-                document.getElementById('exportSection').style.display = 'none';
-                processedData = [];
-            }
-        }
-
-        function exportToJSON() {
-            const provider = document.getElementById('aiProvider').value;
-            const model = document.getElementById('aiModel').value;
-            
-            const exportData = {
-                metadata: {
-                    exported_at: new Date().toISOString(),
-                    ai_provider: provider,
-                    ai_model: model,
-                    total_questions: processedData.length
-                },
-                data: processedData
-            };
-
-            const dataStr = JSON.stringify(exportData, null, 2);
-            const dataBlob = new Blob([dataStr], { type: 'application/json' });
-            const url = URL.createObjectURL(dataBlob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = `faq-export-${Date.now()}.json`;
-            link.click();
-            URL.revokeObjectURL(url);
-        }
     </script>
 </body>
 </html>
-
