@@ -3,6 +3,8 @@ let processedQuestions = [];
 let baseURL = "https://builder.datakite.app";
 let isProcessing = false;
 let currentStep = 1;
+let faqGroups = [];
+let faqGroupCounter = 0;
 
 // Model configurations
 const providerModels = {
@@ -38,6 +40,7 @@ const providerInfo = {
 // Initialize
 window.addEventListener("DOMContentLoaded", () => {
   loadSettings();
+  addFaqGroup(); // Add first FAQ group
   updateSteps();
   setupInputListeners();
 });
@@ -51,8 +54,6 @@ function loadSettings() {
     assistant_code: "assistantCode",
     version_code: "versionCode",
     base_url: "baseURL",
-    ai_instructions: "aiInstructions",
-    faq_id: "faqId",
   };
 
   const savedProvider = localStorage.getItem("ai_provider") || "gemini";
@@ -78,8 +79,6 @@ function saveSettings() {
     api_key: "apiKey",
     ai_provider: "aiProvider",
     ai_model: "aiModel",
-    ai_instructions: "aiInstructions",
-    faq_id: "faqId",
   };
 
   Object.entries(fields).forEach(([key, id]) => {
@@ -90,17 +89,10 @@ function saveSettings() {
 
 function setupInputListeners() {
   // Track input changes to update steps
-  const step1Inputs = [
-    "assistantCode",
-    "versionCode",
-    "faqId",
-    "jwt",
-    "baseURL",
-  ];
+  const step1Inputs = ["assistantCode", "versionCode", "jwt", "baseURL"];
   const step2Inputs = ["aiProvider", "aiModel", "apiKey"];
-  const step3Inputs = ["questionsInput"];
 
-  [...step1Inputs, ...step2Inputs, ...step3Inputs].forEach((id) => {
+  [...step1Inputs, ...step2Inputs].forEach((id) => {
     const el = document.getElementById(id);
     if (el) {
       el.addEventListener("input", updateSteps);
@@ -110,11 +102,24 @@ function setupInputListeners() {
 }
 
 function updateSteps() {
-  const step1Complete =
-    document.getElementById("faqId").value.trim() &&
-    document.getElementById("jwt").value.trim();
+  const step1Complete = document.getElementById("jwt").value.trim();
   const step2Complete = document.getElementById("apiKey").value.trim();
-  const step3Complete = document.getElementById("questionsInput").value.trim();
+
+  // Check if at least one FAQ group has faqId and questions
+  let step3Complete = false;
+  for (const group of faqGroups) {
+    const faqIdEl = document.getElementById(`faqId-${group.id}`);
+    const questionsEl = document.getElementById(`questions-${group.id}`);
+    if (
+      faqIdEl &&
+      questionsEl &&
+      faqIdEl.value.trim() &&
+      questionsEl.value.trim()
+    ) {
+      step3Complete = true;
+      break;
+    }
+  }
 
   // Update step states
   document.querySelectorAll(".step").forEach((step, index) => {
@@ -160,6 +165,109 @@ function updateProviderSettings() {
   localStorage.setItem("ai_provider", provider);
 }
 
+// FAQ Group Management
+function addFaqGroup() {
+  const groupId = ++faqGroupCounter;
+  const group = {
+    id: groupId,
+    faqId: "",
+    instructions: "",
+    questions: "",
+  };
+  faqGroups.push(group);
+
+  const container = document.getElementById("faqGroupsContainer");
+  const groupHtml = `
+    <div class="faq-group" id="faq-group-${groupId}">
+      <div class="faq-group-header">
+        <span class="faq-group-title">FAQ Group #${groupId}</span>
+        ${
+          faqGroups.length > 1
+            ? `<button class="faq-group-remove" onclick="removeFaqGroup(${groupId})">✕</button>`
+            : ""
+        }
+      </div>
+      <div class="form-row">
+        <div class="form-group full">
+          <label class="form-label">
+            FAQ ID <span class="required">*</span>
+          </label>
+          <input
+            type="text"
+            class="form-input"
+            id="faqId-${groupId}"
+            placeholder="Enter your FAQ ID"
+            oninput="updateSteps()"
+          />
+          <span class="form-hint">The unique identifier for this FAQ knowledge base</span>
+        </div>
+      </div>
+      <div class="form-group" style="margin-bottom: 15px;">
+        <label class="form-label">Context / Instructions</label>
+        <textarea
+          class="form-input"
+          id="instructions-${groupId}"
+          placeholder="Example: These FAQs are for an e-commerce platform selling electronics.
+
+مثال: هذه الأسئلة لمتجر إلكتروني."
+          style="min-height: 60px;"
+        ></textarea>
+        <span class="form-hint">Optional: Provide context for AI generation</span>
+      </div>
+      <div class="form-group">
+        <label class="form-label">
+          FAQ Questions <span class="required">*</span>
+        </label>
+        <textarea
+          class="form-input"
+          id="questions-${groupId}"
+          placeholder="Enter one question per line:
+
+How do I track my order?
+كيف يمكنني تتبع طلبي؟"
+          oninput="updateSteps()"
+        ></textarea>
+        <span class="form-hint">Enter one question per line. Mix of Arabic and English is supported.</span>
+      </div>
+    </div>
+  `;
+
+  container.insertAdjacentHTML("beforeend", groupHtml);
+  updateRemoveButtons();
+  updateSteps();
+}
+
+function removeFaqGroup(groupId) {
+  if (faqGroups.length <= 1) return;
+
+  faqGroups = faqGroups.filter((g) => g.id !== groupId);
+  const groupEl = document.getElementById(`faq-group-${groupId}`);
+  if (groupEl) groupEl.remove();
+
+  updateRemoveButtons();
+  updateSteps();
+}
+
+function updateRemoveButtons() {
+  const groups = document.querySelectorAll(".faq-group");
+  groups.forEach((group, index) => {
+    const removeBtn = group.querySelector(".faq-group-remove");
+    if (faqGroups.length <= 1) {
+      if (removeBtn) removeBtn.style.display = "none";
+    } else {
+      if (removeBtn) removeBtn.style.display = "";
+      else {
+        const groupId = parseInt(group.id.replace("faq-group-", ""));
+        const header = group.querySelector(".faq-group-header");
+        header.insertAdjacentHTML(
+          "beforeend",
+          `<button class="faq-group-remove" onclick="removeFaqGroup(${groupId})">✕</button>`
+        );
+      }
+    }
+  });
+}
+
 // Toast notifications
 function showToast(message, type = "info") {
   const container = document.getElementById("toastContainer");
@@ -175,27 +283,48 @@ function showToast(message, type = "info") {
 
 // Validation
 function validateForm() {
-  const required = [
-    { id: "faqId", name: "FAQ ID" },
-    { id: "jwt", name: "JWT Token" },
-    { id: "apiKey", name: "API Key" },
-    { id: "questionsInput", name: "Questions" },
-  ];
-
   let isValid = true;
   document
     .querySelectorAll(".form-input.error")
     .forEach((el) => el.classList.remove("error"));
 
-  for (const field of required) {
-    const element = document.getElementById(field.id);
-    if (!element.value.trim()) {
-      element.classList.add("error");
-      showToast(`${field.name} is required`, "error");
-      element.focus();
-      isValid = false;
-      break;
+  // Validate JWT and API Key
+  const jwtEl = document.getElementById("jwt");
+  const apiKeyEl = document.getElementById("apiKey");
+
+  if (!jwtEl.value.trim()) {
+    jwtEl.classList.add("error");
+    showToast("JWT Token is required", "error");
+    jwtEl.focus();
+    return false;
+  }
+
+  if (!apiKeyEl.value.trim()) {
+    apiKeyEl.classList.add("error");
+    showToast("API Key is required", "error");
+    apiKeyEl.focus();
+    return false;
+  }
+
+  // Validate at least one FAQ group has faqId and questions
+  let hasValidGroup = false;
+  for (const group of faqGroups) {
+    const faqIdEl = document.getElementById(`faqId-${group.id}`);
+    const questionsEl = document.getElementById(`questions-${group.id}`);
+
+    if (
+      faqIdEl &&
+      questionsEl &&
+      faqIdEl.value.trim() &&
+      questionsEl.value.trim()
+    ) {
+      hasValidGroup = true;
     }
+  }
+
+  if (!hasValidGroup) {
+    showToast("At least one FAQ group must have FAQ ID and Questions", "error");
+    return false;
   }
 
   return isValid;
@@ -211,19 +340,51 @@ function updateProgress(current, total, text, apiCalls) {
   document.getElementById("progressAPICalls").textContent = apiCalls;
 }
 
-async function processQuestions() {
+async function processAllFaqGroups() {
   if (isProcessing) return;
   if (!validateForm()) return;
 
   saveSettings();
 
-  const questionsText = document.getElementById("questionsInput").value.trim();
-  const questions = questionsText.split("\n").filter((q) => q.trim() !== "");
+  // Collect all valid FAQ groups
+  const validGroups = [];
+  for (const group of faqGroups) {
+    const faqIdEl = document.getElementById(`faqId-${group.id}`);
+    const instructionsEl = document.getElementById(`instructions-${group.id}`);
+    const questionsEl = document.getElementById(`questions-${group.id}`);
 
-  if (questions.length === 0) {
-    showToast("Please enter at least one question", "error");
+    if (
+      faqIdEl &&
+      questionsEl &&
+      faqIdEl.value.trim() &&
+      questionsEl.value.trim()
+    ) {
+      const questionsText = questionsEl.value.trim();
+      const questions = questionsText
+        .split("\n")
+        .filter((q) => q.trim() !== "");
+
+      if (questions.length > 0) {
+        validGroups.push({
+          groupId: group.id,
+          faqId: faqIdEl.value.trim(),
+          instructions: instructionsEl ? instructionsEl.value.trim() : "",
+          questions: questions,
+        });
+      }
+    }
+  }
+
+  if (validGroups.length === 0) {
+    showToast("No valid FAQ groups to process", "error");
     return;
   }
+
+  // Calculate total questions
+  const totalQuestions = validGroups.reduce(
+    (sum, g) => sum + g.questions.length,
+    0
+  );
 
   isProcessing = true;
   document.getElementById("processBtn").disabled = true;
@@ -231,68 +392,77 @@ async function processQuestions() {
   document.getElementById("resultsCard").classList.remove("active");
 
   baseURL = document.getElementById("baseURL").value.trim();
-  const aiInstructions = document.getElementById("aiInstructions").value.trim();
 
   processedQuestions = [];
   let totalAPICalls = 0;
+  let currentQuestionIndex = 0;
 
   try {
-    for (let i = 0; i < questions.length; i++) {
-      const question = questions[i].trim();
-      updateProgress(
-        i,
-        questions.length,
-        `Processing: ${question.substring(0, 40)}...`,
-        totalAPICalls
-      );
+    for (const group of validGroups) {
+      for (let i = 0; i < group.questions.length; i++) {
+        const question = group.questions[i].trim();
+        currentQuestionIndex++;
 
-      try {
-        const questionData = await processQuestion(
-          question,
-          i + 1,
-          aiInstructions
+        updateProgress(
+          currentQuestionIndex,
+          totalQuestions,
+          `[FAQ ${group.faqId}] Processing: ${question.substring(0, 30)}...`,
+          totalAPICalls
         );
-        processedQuestions.push(questionData);
 
-        // Count API calls (1 per question now with unified API)
-        totalAPICalls++;
-      } catch (error) {
-        console.error(`Error processing question ${i + 1}:`, error);
-        showToast(`Error on Q${i + 1}: ${error.message}`, "error");
+        try {
+          const questionData = await processQuestion(
+            question,
+            currentQuestionIndex,
+            group.instructions,
+            group.faqId
+          );
+          questionData.faqId = group.faqId;
+          questionData.groupId = group.groupId;
+          processedQuestions.push(questionData);
 
-        processedQuestions.push({
-          index: i + 1,
-          originalQuestion: question,
-          error: error.message,
-          arabic: {
-            question: "",
-            tags: [],
-            synonyms: [],
-            responses: [],
-            questionId: null,
-          },
-          english: {
-            question: "",
-            tags: [],
-            synonyms: [],
-            responses: [],
-            questionId: null,
-          },
-          apiCall: {
-            status: "error",
+          totalAPICalls++;
+        } catch (error) {
+          console.error(
+            `Error processing question ${currentQuestionIndex}:`,
+            error
+          );
+          showToast(
+            `Error on Q${currentQuestionIndex}: ${error.message}`,
+            "error"
+          );
+
+          processedQuestions.push({
+            index: currentQuestionIndex,
+            originalQuestion: question,
+            faqId: group.faqId,
+            groupId: group.groupId,
             error: error.message,
-          },
-        });
-        totalAPICalls++;
+            arabic: {
+              question: "",
+              tags: [],
+              synonyms: [],
+              responses: [],
+              questionId: null,
+            },
+            english: {
+              question: "",
+              tags: [],
+              synonyms: [],
+              responses: [],
+              questionId: null,
+            },
+            apiCall: {
+              status: "error",
+              error: error.message,
+            },
+          });
+          totalAPICalls++;
+        }
       }
     }
 
-    updateProgress(
-      questions.length,
-      questions.length,
-      "Complete!",
-      totalAPICalls
-    );
+    updateProgress(totalQuestions, totalQuestions, "Complete!", totalAPICalls);
     showToast("Processing complete!", "success");
     displayResults();
   } catch (error) {
@@ -305,7 +475,7 @@ async function processQuestions() {
   }
 }
 
-async function processQuestion(question, index, instructions = "") {
+async function processQuestion(question, index, instructions = "", faqId = "") {
   const provider = document.getElementById("aiProvider").value;
   const model = document.getElementById("aiModel").value;
   const apiKey = document.getElementById("apiKey").value;
@@ -313,6 +483,7 @@ async function processQuestion(question, index, instructions = "") {
   const questionData = {
     index: index,
     originalQuestion: question,
+    faqId: faqId,
     arabic: {
       question: "",
       questionId: null,
@@ -353,7 +524,7 @@ async function processQuestion(question, index, instructions = "") {
   questionData.english.responses = aiContent.english.responses || [];
 
   // Submit to API using the unified endpoint
-  await submitFAQQuestion(questionData);
+  await submitFAQQuestion(questionData, faqId);
 
   return questionData;
 }
@@ -618,11 +789,13 @@ ${
 }
 
 // Submit FAQ question using the unified API endpoint
-async function submitFAQQuestion(questionData) {
+async function submitFAQQuestion(questionData, faqId = "") {
   const assistantCode = document.getElementById("assistantCode").value.trim();
   const versionCode = document.getElementById("versionCode").value.trim();
-  const faqId = document.getElementById("faqId").value.trim();
   const jwt = document.getElementById("jwt").value.trim();
+
+  // Use faqId from parameter if provided, otherwise from questionData
+  const targetFaqId = faqId || questionData.faqId;
 
   // Validate that we have content for at least one language
   if (!questionData.arabic.question && !questionData.english.question) {
@@ -642,24 +815,24 @@ async function submitFAQQuestion(questionData) {
   // Build the request body
   const requestBody = {
     questions: {
-      "1": questionData.arabic.question || "",
-      "2": questionData.english.question || "",
+      1: questionData.arabic.question || "",
+      2: questionData.english.question || "",
     },
     tags: {
-      "1": questionData.arabic.tags || [],
-      "2": questionData.english.tags || [],
+      1: questionData.arabic.tags || [],
+      2: questionData.english.tags || [],
     },
     synonyms: {
-      "1": questionData.arabic.synonyms || [],
-      "2": questionData.english.synonyms || [],
+      1: questionData.arabic.synonyms || [],
+      2: questionData.english.synonyms || [],
     },
     responses: {
-      "1": formatResponse(questionData.arabic.responses || []),
-      "2": formatResponse(questionData.english.responses || []),
+      1: formatResponse(questionData.arabic.responses || []),
+      2: formatResponse(questionData.english.responses || []),
     },
   };
 
-  const url = `${baseURL}/api/knowledge_ai/${assistantCode}/${versionCode}/faq/${faqId}/question`;
+  const url = `${baseURL}/api/knowledge_ai/${assistantCode}/${versionCode}/faq/${targetFaqId}/question`;
 
   try {
     const response = await fetch(url, {
@@ -696,11 +869,11 @@ async function submitFAQQuestion(questionData) {
 // Retry a failed question submission
 async function retryQuestion(qIndex) {
   const question = processedQuestions[qIndex];
-  
+
   showToast("Retrying...", "info");
 
   try {
-    await submitFAQQuestion(question);
+    await submitFAQQuestion(question, question.faqId);
     showToast("Retry successful!", "success");
     displayResults();
   } catch (error) {
@@ -737,8 +910,17 @@ function displayResults() {
           <div class="question-info">
             <div class="question-text">${escapeHtml(q.originalQuestion)}</div>
             <div class="question-meta">
-              AR ID: ${q.arabic.questionId || "N/A"} | EN ID: ${q.english.questionId || "N/A"}
-              ${q.apiCall.error ? ` | Error: ${escapeHtml(q.apiCall.error)}` : ""}
+              <span class="faq-badge">FAQ: ${escapeHtml(
+                q.faqId || "N/A"
+              )}</span>
+              AR ID: ${q.arabic.questionId || "N/A"} | EN ID: ${
+      q.english.questionId || "N/A"
+    }
+              ${
+                q.apiCall.error
+                  ? ` | Error: ${escapeHtml(q.apiCall.error)}`
+                  : ""
+              }
             </div>
           </div>
           <span class="question-status ${overallStatus}">
@@ -778,17 +960,21 @@ function renderLanguageContent(q, lang, qIndex, isActive) {
 
   // Format responses with proper line breaks for display
   const formatResponseForDisplay = (resp) => {
-    if (!resp) return '';
+    if (!resp) return "";
     return escapeHtml(resp)
-      .replace(/\\n/g, '<br>')
-      .replace(/\\t/g, '&nbsp;&nbsp;&nbsp;&nbsp;');
+      .replace(/\\n/g, "<br>")
+      .replace(/\\t/g, "&nbsp;&nbsp;&nbsp;&nbsp;");
   };
 
   return `
-    <div class="lang-content ${isActive ? "active" : ""}" id="lang-${qIndex}-${lang}">
+    <div class="lang-content ${
+      isActive ? "active" : ""
+    }" id="lang-${qIndex}-${lang}">
       <div class="detail-grid">
         <div class="detail-section full">
-          <div class="detail-title">Question (ID: ${langData.questionId || "N/A"})</div>
+          <div class="detail-title">Question (ID: ${
+            langData.questionId || "N/A"
+          })</div>
           <div class="detail-content">${
             escapeHtml(langData.question) ||
             '<em style="color: var(--gray-500);">Not generated</em>'
@@ -802,24 +988,26 @@ function renderLanguageContent(q, lang, qIndex, isActive) {
               ${
                 langData.tags
                   .map((t) => `<span class="tag">${escapeHtml(t)}</span>`)
-                  .join("") ||
-                '<em style="color: var(--gray-500);">None</em>'
+                  .join("") || '<em style="color: var(--gray-500);">None</em>'
               }
             </div>
           </div>
         </div>
         
         <div class="detail-section">
-          <div class="detail-title">Responses (${langData.responses.length})</div>
+          <div class="detail-title">Responses (${
+            langData.responses.length
+          })</div>
           <div class="detail-content">
             ${
               langData.responses
                 .map(
                   (r, i) =>
-                    `<div style="margin-bottom: 10px;"><strong>${i + 1}.</strong> ${formatResponseForDisplay(r)}</div>`
+                    `<div style="margin-bottom: 10px;"><strong>${
+                      i + 1
+                    }.</strong> ${formatResponseForDisplay(r)}</div>`
                 )
-                .join("") ||
-              '<em style="color: var(--gray-500);">None</em>'
+                .join("") || '<em style="color: var(--gray-500);">None</em>'
             }
           </div>
         </div>
@@ -832,10 +1020,11 @@ function renderLanguageContent(q, lang, qIndex, isActive) {
                 langData.synonyms
                   .map(
                     (s, i) =>
-                      `<div class="synonym-item"><span class="synonym-num">${i + 1}.</span>${escapeHtml(s)}</div>`
+                      `<div class="synonym-item"><span class="synonym-num">${
+                        i + 1
+                      }.</span>${escapeHtml(s)}</div>`
                   )
-                  .join("") ||
-                '<em style="color: var(--gray-500);">None</em>'
+                  .join("") || '<em style="color: var(--gray-500);">None</em>'
               }
             </div>
           </div>
@@ -878,12 +1067,17 @@ async function retryAllFailed() {
 }
 
 function exportResults() {
+  // Collect unique faqIds from processed questions
+  const faqIds = [
+    ...new Set(processedQuestions.map((q) => q.faqId).filter(Boolean)),
+  ];
+
   const exportData = {
     timestamp: new Date().toISOString(),
     configuration: {
       assistantCode: document.getElementById("assistantCode").value,
       versionCode: document.getElementById("versionCode").value,
-      faqId: document.getElementById("faqId").value,
+      faqIds: faqIds,
     },
     questions: processedQuestions,
   };
@@ -902,7 +1096,17 @@ function exportResults() {
 
 function clearAll() {
   if (!confirm("Clear all data and results?")) return;
-  document.getElementById("questionsInput").value = "";
+
+  // Clear all FAQ group inputs
+  faqGroups.forEach((group) => {
+    const faqIdEl = document.getElementById(`faqId-${group.id}`);
+    const instructionsEl = document.getElementById(`instructions-${group.id}`);
+    const questionsEl = document.getElementById(`questions-${group.id}`);
+    if (faqIdEl) faqIdEl.value = "";
+    if (instructionsEl) instructionsEl.value = "";
+    if (questionsEl) questionsEl.value = "";
+  });
+
   document.getElementById("resultsCard").classList.remove("active");
   processedQuestions = [];
   updateSteps();

@@ -131,21 +131,7 @@
               </div>
             </div>
             <div class="form-row">
-              <div class="form-group">
-                <label class="form-label">
-                  FAQ ID <span class="required">*</span>
-                </label>
-                <input
-                  type="text"
-                  class="form-input"
-                  id="faqId"
-                  placeholder="Enter your FAQ ID"
-                />
-                <span class="form-hint"
-                  >The unique identifier for your FAQ knowledge base</span
-                >
-              </div>
-              <div class="form-group">
+              <div class="form-group full">
                 <label class="form-label">
                   JWT Token <span class="required">*</span>
                 </label>
@@ -229,59 +215,42 @@
           </div>
         </div>
 
-        <!-- Step 3: Questions Input -->
+        <!-- Step 3: FAQ Groups -->
         <div class="card" id="questions">
           <div class="card-header">
             <div class="card-title">
               <div class="card-title-icon yellow">❓</div>
-              Questions Input
+              FAQ Groups
             </div>
             <span class="card-badge required">Required</span>
           </div>
           <div class="card-body">
-            <div class="form-group" style="margin-bottom: 20px">
-              <label class="form-label">Context / Instructions</label>
-              <textarea
-                class="form-input"
-                id="aiInstructions"
-                placeholder="Example: These FAQs are for an e-commerce platform selling electronics. Focus on product support, shipping, and returns.
-
-مثال: هذه الأسئلة لمتجر إلكتروني. ركز على دعم المنتجات والشحن والإرجاع."
-                style="min-height: 80px"
-              ></textarea>
-              <span class="form-hint"
-                >Optional: Provide context to help AI generate more accurate
-                content</span
-              >
+            <div class="helper-card" style="margin-bottom: 20px;">
+              <span class="helper-icon">💡</span>
+              <div class="helper-content">
+                <h4>Multiple FAQ Groups</h4>
+                <p>
+                  Add multiple FAQ groups to process questions for different FAQ IDs at once.
+                  Each group has its own FAQ ID, instructions, and questions.
+                </p>
+              </div>
             </div>
 
-            <div class="form-group">
-              <label class="form-label">
-                FAQ Questions <span class="required">*</span>
-              </label>
-              <textarea
-                class="form-input"
-                id="questionsInput"
-                placeholder="Enter one question per line:
-
-How do I track my order?
-كيف يمكنني تتبع طلبي؟
-What is your return policy?
-ما هي سياسة الإرجاع؟"
-              ></textarea>
-              <span class="form-hint"
-                >Enter one question per line. Mix of Arabic and English is
-                supported.</span
-              >
+            <div id="faqGroupsContainer">
+              <!-- FAQ groups will be added here dynamically -->
             </div>
+
+            <button class="btn btn-secondary" onclick="addFaqGroup()" style="margin-bottom: 20px; width: 100%;">
+              + Add FAQ Group
+            </button>
 
             <div class="btn-group">
               <button
                 class="btn btn-primary"
                 id="processBtn"
-                onclick="processQuestions()"
+                onclick="processAllFaqGroups()"
               >
-                Process Questions
+                Process All Groups
               </button>
               <button class="btn btn-secondary" onclick="clearAll()">
                 Clear All
