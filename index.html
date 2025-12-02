@@ -1,2158 +1,371 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>FAQ Builder</title>
-    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --blue: #1a73e8;
-            --blue-hover: #1557b0;
-            --blue-light: #e8f0fe;
-            --green: #1e8e3e;
-            --green-light: #e6f4ea;
-            --red: #d93025;
-            --red-light: #fce8e6;
-            --yellow: #f9ab00;
-            --yellow-light: #fef7e0;
-            --gray-50: #f8f9fa;
-            --gray-100: #f1f3f4;
-            --gray-200: #e8eaed;
-            --gray-300: #dadce0;
-            --gray-400: #bdc1c6;
-            --gray-500: #9aa0a6;
-            --gray-600: #80868b;
-            --gray-700: #5f6368;
-            --gray-800: #3c4043;
-            --gray-900: #202124;
-            --white: #ffffff;
-            --shadow-1: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
-            --shadow-2: 0 1px 2px 0 rgba(60,64,67,0.3), 0 2px 6px 2px rgba(60,64,67,0.15);
-            --shadow-3: 0 1px 3px 0 rgba(60,64,67,0.3), 0 4px 8px 3px rgba(60,64,67,0.15);
-        }
-
-        body {
-            font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--gray-50);
-            min-height: 100vh;
-            color: var(--gray-900);
-            line-height: 1.5;
-        }
-
-        /* Header */
-        .header {
-            background: var(--white);
-            border-bottom: 1px solid var(--gray-200);
-            padding: 16px 24px;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .header-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            text-decoration: none;
-        }
-
-        .logo-icon {
-            width: 40px;
-            height: 40px;
-            background: var(--blue);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 20px;
-        }
-
-        .logo-text {
-            font-family: 'Google Sans', sans-serif;
-            font-size: 22px;
-            font-weight: 400;
-            color: var(--gray-800);
-        }
-
-        .logo-text span {
-            color: var(--gray-500);
-            font-weight: 400;
-        }
-
-        /* Main Layout */
-        .main {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 24px;
-            display: grid;
-            grid-template-columns: 280px 1fr;
-            gap: 24px;
-            min-height: calc(100vh - 73px);
-        }
-
-        /* Sidebar - Steps */
-        .sidebar {
-            position: sticky;
-            top: 97px;
-            height: fit-content;
-        }
-
-        .steps-card {
-            background: var(--white);
-            border-radius: 8px;
-            box-shadow: var(--shadow-1);
-            padding: 20px;
-        }
-
-        .steps-title {
-            font-family: 'Google Sans', sans-serif;
-            font-size: 14px;
-            font-weight: 500;
-            color: var(--gray-700);
-            margin-bottom: 16px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .step {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            padding: 12px 0;
-            border-bottom: 1px solid var(--gray-100);
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .step:last-child {
-            border-bottom: none;
-        }
-
-        .step:hover {
-            background: var(--gray-50);
-            margin: 0 -20px;
-            padding: 12px 20px;
-        }
-
-        .step-number {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 13px;
-            font-weight: 500;
-            flex-shrink: 0;
-            transition: all 0.2s;
-        }
-
-        .step.pending .step-number {
-            background: var(--gray-100);
-            color: var(--gray-600);
-        }
-
-        .step.active .step-number {
-            background: var(--blue);
-            color: white;
-        }
-
-        .step.completed .step-number {
-            background: var(--green);
-            color: white;
-        }
-
-        .step-content {
-            flex: 1;
-        }
-
-        .step-label {
-            font-size: 14px;
-            font-weight: 500;
-            color: var(--gray-800);
-            margin-bottom: 2px;
-        }
-
-        .step.pending .step-label {
-            color: var(--gray-500);
-        }
-
-        .step.active .step-label {
-            color: var(--blue);
-        }
-
-        .step-desc {
-            font-size: 12px;
-            color: var(--gray-500);
-        }
-
-        /* Content Area */
-        .content {
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-        }
-
-        /* Cards */
-        .card {
-            background: var(--white);
-            border-radius: 8px;
-            box-shadow: var(--shadow-1);
-            overflow: hidden;
-        }
-
-        .card-header {
-            padding: 20px 24px;
-            border-bottom: 1px solid var(--gray-200);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .card-title {
-            font-family: 'Google Sans', sans-serif;
-            font-size: 18px;
-            font-weight: 500;
-            color: var(--gray-900);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .card-title-icon {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-        }
-
-        .card-title-icon.blue { background: var(--blue-light); }
-        .card-title-icon.green { background: var(--green-light); }
-        .card-title-icon.yellow { background: var(--yellow-light); }
-
-        .card-badge {
-            font-size: 12px;
-            padding: 4px 12px;
-            border-radius: 100px;
-            font-weight: 500;
-        }
-
-        .card-badge.optional {
-            background: var(--gray-100);
-            color: var(--gray-600);
-        }
-
-        .card-badge.required {
-            background: var(--blue-light);
-            color: var(--blue);
-        }
-
-        .card-body {
-            padding: 24px;
-        }
-
-        .card-body.collapsed {
-            display: none;
-        }
-
-        /* Form Elements */
-        .form-row {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-
-        .form-row:last-child {
-            margin-bottom: 0;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .form-group.full {
-            grid-column: 1 / -1;
-        }
-
-        .form-label {
-            font-size: 14px;
-            font-weight: 500;
-            color: var(--gray-700);
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .form-label .required {
-            color: var(--red);
-        }
-
-        .form-label .hint-icon {
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            background: var(--gray-200);
-            color: var(--gray-600);
-            font-size: 11px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: help;
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 12px 16px;
-            border: 1px solid var(--gray-300);
-            border-radius: 4px;
-            font-size: 14px;
-            font-family: inherit;
-            background: var(--white);
-            transition: all 0.2s;
-            color: var(--gray-900);
-        }
-
-        .form-input:hover {
-            border-color: var(--gray-400);
-        }
-
-        .form-input:focus {
-            outline: none;
-            border-color: var(--blue);
-            box-shadow: 0 0 0 2px var(--blue-light);
-        }
-
-        .form-input::placeholder {
-            color: var(--gray-500);
-        }
-
-        .form-input.error {
-            border-color: var(--red);
-        }
-
-        .form-input.error:focus {
-            box-shadow: 0 0 0 2px var(--red-light);
-        }
-
-        textarea.form-input {
-            min-height: 120px;
-            resize: vertical;
-            line-height: 1.6;
-        }
-
-        .form-hint {
-            font-size: 12px;
-            color: var(--gray-600);
-            margin-top: 6px;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .form-hint a {
-            color: var(--blue);
-            text-decoration: none;
-        }
-
-        .form-hint a:hover {
-            text-decoration: underline;
-        }
-
-        .form-error {
-            font-size: 12px;
-            color: var(--red);
-            margin-top: 6px;
-        }
-
-        /* Select */
-        select.form-input {
-            cursor: pointer;
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%235f6368' d='M2 4l4 4 4-4'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 12px center;
-            padding-right: 36px;
-        }
-
-        /* Buttons */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 10px 24px;
-            font-size: 14px;
-            font-weight: 500;
-            font-family: 'Google Sans', sans-serif;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: all 0.2s;
-            text-decoration: none;
-        }
-
-        .btn-primary {
-            background: var(--blue);
-            color: var(--white);
-        }
-
-        .btn-primary:hover:not(:disabled) {
-            background: var(--blue-hover);
-            box-shadow: var(--shadow-1);
-        }
-
-        .btn-primary:active:not(:disabled) {
-            background: var(--blue-hover);
-        }
-
-        .btn-primary:disabled {
-            background: var(--gray-300);
-            color: var(--gray-500);
-            cursor: not-allowed;
-        }
-
-        .btn-secondary {
-            background: var(--white);
-            color: var(--blue);
-            border: 1px solid var(--gray-300);
-        }
-
-        .btn-secondary:hover {
-            background: var(--blue-light);
-            border-color: var(--blue-light);
-        }
-
-        .btn-text {
-            background: transparent;
-            color: var(--blue);
-            padding: 10px 16px;
-        }
-
-        .btn-text:hover {
-            background: var(--blue-light);
-        }
-
-        .btn-group {
-            display: flex;
-            gap: 12px;
-            margin-top: 24px;
-        }
-
-        /* Expand/Collapse Toggle */
-        .toggle-btn {
-            background: none;
-            border: none;
-            color: var(--blue);
-            font-size: 13px;
-            font-weight: 500;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            padding: 4px 8px;
-            border-radius: 4px;
-        }
-
-        .toggle-btn:hover {
-            background: var(--blue-light);
-        }
-
-        .toggle-arrow {
-            transition: transform 0.2s;
-        }
-
-        .toggle-btn.collapsed .toggle-arrow {
-            transform: rotate(-90deg);
-        }
-
-        /* Progress Section */
-        .progress-card {
-            display: none;
-        }
-
-        .progress-card.active {
-            display: block;
-        }
-
-        .progress-content {
-            padding: 32px 24px;
-            text-align: center;
-        }
-
-        .progress-spinner {
-            width: 48px;
-            height: 48px;
-            border: 3px solid var(--gray-200);
-            border-top-color: var(--blue);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 24px;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .progress-title {
-            font-family: 'Google Sans', sans-serif;
-            font-size: 18px;
-            font-weight: 500;
-            color: var(--gray-900);
-            margin-bottom: 8px;
-        }
-
-        .progress-subtitle {
-            font-size: 14px;
-            color: var(--gray-600);
-            margin-bottom: 24px;
-        }
-
-        .progress-bar-container {
-            background: var(--gray-200);
-            border-radius: 4px;
-            height: 4px;
-            overflow: hidden;
-            max-width: 400px;
-            margin: 0 auto 16px;
-        }
-
-        .progress-bar {
-            height: 100%;
-            background: var(--blue);
-            border-radius: 4px;
-            transition: width 0.3s ease;
-            width: 0%;
-        }
-
-        .progress-stats {
-            display: flex;
-            justify-content: center;
-            gap: 32px;
-            font-size: 13px;
-            color: var(--gray-600);
-        }
-
-        .progress-stat {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .progress-stat strong {
-            color: var(--gray-900);
-        }
-
-        /* Results Section */
-        .results-card {
-            display: none;
-        }
-
-        .results-card.active {
-            display: block;
-        }
-
-        /* Stats Grid */
-        .stats-row {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 16px;
-            padding: 20px 24px;
-            background: var(--gray-50);
-            border-bottom: 1px solid var(--gray-200);
-        }
-
-        .stat-item {
-            text-align: center;
-        }
-
-        .stat-value {
-            font-family: 'Google Sans', sans-serif;
-            font-size: 28px;
-            font-weight: 500;
-            color: var(--gray-900);
-        }
-
-        .stat-value.success { color: var(--green); }
-        .stat-value.error { color: var(--red); }
-        .stat-value.primary { color: var(--blue); }
-
-        .stat-label {
-            font-size: 12px;
-            color: var(--gray-600);
-            margin-top: 4px;
-        }
-
-        /* Question List */
-        .question-list {
-            padding: 16px 24px;
-        }
-
-        .question-item {
-            border: 1px solid var(--gray-200);
-            border-radius: 8px;
-            margin-bottom: 12px;
-            overflow: hidden;
-            transition: box-shadow 0.2s;
-        }
-
-        .question-item:hover {
-            box-shadow: var(--shadow-1);
-        }
-
-        .question-item:last-child {
-            margin-bottom: 0;
-        }
-
-        .question-header {
-            padding: 16px;
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            cursor: pointer;
-            background: var(--white);
-            transition: background 0.2s;
-        }
-
-        .question-header:hover {
-            background: var(--gray-50);
-        }
-
-        .question-num {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: var(--gray-100);
-            color: var(--gray-700);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            font-weight: 500;
-            flex-shrink: 0;
-        }
-
-        .question-info {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .question-text {
-            font-size: 14px;
-            font-weight: 500;
-            color: var(--gray-900);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .question-meta {
-            font-size: 12px;
-            color: var(--gray-500);
-            margin-top: 2px;
-        }
-
-        .question-status {
-            padding: 4px 12px;
-            border-radius: 100px;
-            font-size: 12px;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .question-status.success {
-            background: var(--green-light);
-            color: var(--green);
-        }
-
-        .question-status.error {
-            background: var(--red-light);
-            color: var(--red);
-        }
-
-        .question-status.partial {
-            background: var(--yellow-light);
-            color: var(--yellow);
-        }
-
-        .question-expand {
-            color: var(--gray-400);
-            transition: transform 0.2s;
-        }
-
-        .question-item.open .question-expand {
-            transform: rotate(180deg);
-        }
-
-        .question-details {
-            display: none;
-            background: var(--gray-50);
-            border-top: 1px solid var(--gray-200);
-        }
-
-        .question-item.open .question-details {
-            display: block;
-        }
-
-        /* Language Tabs */
-        .lang-tabs {
-            display: flex;
-            background: var(--white);
-            border-bottom: 1px solid var(--gray-200);
-        }
-
-        .lang-tab {
-            padding: 12px 24px;
-            border: none;
-            background: none;
-            font-size: 14px;
-            font-weight: 500;
-            color: var(--gray-600);
-            cursor: pointer;
-            position: relative;
-            transition: color 0.2s;
-        }
-
-        .lang-tab:hover {
-            color: var(--gray-900);
-        }
-
-        .lang-tab.active {
-            color: var(--blue);
-        }
-
-        .lang-tab.active::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: var(--blue);
-        }
-
-        .lang-content {
-            display: none;
-            padding: 20px;
-        }
-
-        .lang-content.active {
-            display: block;
-        }
-
-        /* Detail Sections */
-        .detail-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-        }
-
-        .detail-section {
-            background: var(--white);
-            border-radius: 8px;
-            padding: 16px;
-        }
-
-        .detail-section.full {
-            grid-column: 1 / -1;
-        }
-
-        .detail-title {
-            font-size: 11px;
-            font-weight: 500;
-            color: var(--gray-500);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 12px;
-        }
-
-        .detail-content {
-            font-size: 14px;
-            color: var(--gray-800);
-            line-height: 1.6;
-        }
-
-        /* Tags */
-        .tag-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-
-        .tag {
-            background: var(--blue-light);
-            color: var(--blue);
-            padding: 4px 12px;
-            border-radius: 100px;
-            font-size: 13px;
-            font-weight: 500;
-        }
-
-        /* Synonyms */
-        .synonym-list {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .synonym-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 13px;
-            padding: 6px 0;
-            border-bottom: 1px solid var(--gray-100);
-        }
-
-        .synonym-item:last-child {
-            border-bottom: none;
-        }
-
-        .synonym-num {
-            color: var(--gray-400);
-            font-size: 12px;
-            min-width: 24px;
-        }
-
-        /* API Status */
-        .api-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 8px;
-        }
-
-        .api-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 12px;
-            background: var(--gray-50);
-            border-radius: 4px;
-            font-size: 12px;
-        }
-
-        .api-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            flex-shrink: 0;
-        }
-
-        .api-dot.success { background: var(--green); }
-        .api-dot.error { background: var(--red); }
-        .api-dot.pending { background: var(--gray-400); }
-
-        .api-name {
-            flex: 1;
-            color: var(--gray-700);
-        }
-
-        .api-retry {
-            background: none;
-            border: none;
-            color: var(--blue);
-            cursor: pointer;
-            font-size: 11px;
-            padding: 2px 6px;
-            border-radius: 4px;
-        }
-
-        .api-retry:hover {
-            background: var(--blue-light);
-        }
-
-        /* Toast */
-        .toast-container {
-            position: fixed;
-            bottom: 24px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 1000;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            align-items: center;
-        }
-
-        .toast {
-            background: var(--gray-800);
-            color: var(--white);
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            box-shadow: var(--shadow-3);
-            animation: toastIn 0.3s ease;
-        }
-
-        @keyframes toastIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .toast-icon {
-            font-size: 18px;
-        }
-
-        .toast.success { background: var(--green); }
-        .toast.error { background: var(--red); }
-        .toast.info { background: var(--gray-800); }
-
-        /* Helper Text */
-        .helper-card {
-            background: var(--blue-light);
-            border-radius: 8px;
-            padding: 16px 20px;
-            margin-bottom: 20px;
-            display: flex;
-            gap: 12px;
-            align-items: flex-start;
-        }
-
-        .helper-icon {
-            font-size: 20px;
-            flex-shrink: 0;
-        }
-
-        .helper-content h4 {
-            font-family: 'Google Sans', sans-serif;
-            font-size: 14px;
-            font-weight: 500;
-            color: var(--blue-hover);
-            margin-bottom: 4px;
-        }
-
-        .helper-content p {
-            font-size: 13px;
-            color: var(--blue);
-            line-height: 1.5;
-        }
-
-        /* Empty State */
-        .empty-state {
-            text-align: center;
-            padding: 48px 24px;
-        }
-
-        .empty-icon {
-            font-size: 48px;
-            margin-bottom: 16px;
-            opacity: 0.5;
-        }
-
-        .empty-text {
-            font-size: 14px;
-            color: var(--gray-600);
-        }
-
-        /* Responsive */
-        @media (max-width: 900px) {
-            .main {
-                grid-template-columns: 1fr;
-            }
-
-            .sidebar {
-                position: static;
-            }
-
-            .steps-card {
-                display: flex;
-                gap: 16px;
-                overflow-x: auto;
-                padding: 16px;
-            }
-
-            .steps-title {
-                display: none;
-            }
-
-            .step {
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-                min-width: 100px;
-                padding: 12px;
-                border-bottom: none;
-                border-radius: 8px;
-            }
-
-            .step:hover {
-                margin: 0;
-                padding: 12px;
-            }
-
-            .form-row {
-                grid-template-columns: 1fr;
-            }
-
-            .stats-row {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .detail-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
-</head>
-<body>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Roboto:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
     <div class="toast-container" id="toastContainer"></div>
 
     <!-- Header -->
     <header class="header">
-        <div class="header-content">
-            <a href="#" class="logo">
-                <div class="logo-icon">📋</div>
-                <div class="logo-text">FAQ Builder <span>by Rawi</span></div>
-            </a>
-        </div>
+      <div class="header-content">
+        <a href="#" class="logo">
+          <div class="logo-icon">📋</div>
+          <div class="logo-text">FAQ Builder <span>by Rawi</span></div>
+        </a>
+      </div>
     </header>
 
     <!-- Main Content -->
     <main class="main">
-        <!-- Sidebar - Steps -->
-        <aside class="sidebar">
-            <div class="steps-card">
-                <div class="steps-title">Setup Steps</div>
-                
-                <div class="step active" data-step="1" onclick="scrollToCard('config')">
-                    <div class="step-number">1</div>
-                    <div class="step-content">
-                        <div class="step-label">API Settings</div>
-                        <div class="step-desc">Configure your connection</div>
-                    </div>
-                </div>
-                
-                <div class="step pending" data-step="2" onclick="scrollToCard('ai')">
-                    <div class="step-number">2</div>
-                    <div class="step-content">
-                        <div class="step-label">AI Provider</div>
-                        <div class="step-desc">Select AI model</div>
-                    </div>
-                </div>
-                
-                <div class="step pending" data-step="3" onclick="scrollToCard('questions')">
-                    <div class="step-number">3</div>
-                    <div class="step-content">
-                        <div class="step-label">Questions</div>
-                        <div class="step-desc">Enter FAQ questions</div>
-                    </div>
-                </div>
-                
-                <div class="step pending" data-step="4">
-                    <div class="step-number">4</div>
-                    <div class="step-content">
-                        <div class="step-label">Process</div>
-                        <div class="step-desc">Generate & submit</div>
-                    </div>
-                </div>
-            </div>
-        </aside>
+      <!-- Sidebar - Steps -->
+      <aside class="sidebar">
+        <div class="steps-card">
+          <div class="steps-title">Setup Steps</div>
 
-        <!-- Content Area -->
-        <div class="content">
-            <!-- Step 1: API Configuration -->
-            <div class="card" id="config">
-                <div class="card-header">
-                    <div class="card-title">
-                        <div class="card-title-icon blue">🔌</div>
-                        API Configuration
-                    </div>
-                    <span class="card-badge required">Required</span>
-                </div>
-                <div class="card-body">
-                    <div class="helper-card">
-                        <span class="helper-icon">💡</span>
-                        <div class="helper-content">
-                            <h4>Where to find these values?</h4>
-                            <p>Get your Assistant Code, Version Code, and FAQ ID from the Rawi Builder dashboard. Your JWT token is your authentication key.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="form-row">
-                    <div class="form-group">
-                            <label class="form-label">
-                                Assistant Code
-                                <span class="hint-icon" title="Found in your assistant settings">?</span>
-                            </label>
-                            <input type="text" class="form-input" id="assistantCode" value="li6monObUb" placeholder="e.g., li6monObUb">
-                    </div>
-                    <div class="form-group">
-                            <label class="form-label">
-                                Version Code
-                                <span class="hint-icon" title="Found in your version settings">?</span>
-                            </label>
-                            <input type="text" class="form-input" id="versionCode" value="li68VXoo7d" placeholder="e.g., li68VXoo7d">
-                    </div>
-                    </div>
-                    <div class="form-row">
-                    <div class="form-group">
-                            <label class="form-label">
-                                FAQ ID <span class="required">*</span>
-                            </label>
-                            <input type="text" class="form-input" id="faqId" placeholder="Enter your FAQ ID">
-                            <span class="form-hint">The unique identifier for your FAQ knowledge base</span>
-                    </div>
-                    <div class="form-group">
-                            <label class="form-label">
-                                JWT Token <span class="required">*</span>
-                            </label>
-                            <input type="password" class="form-input" id="jwt" placeholder="Enter your JWT token">
-                            <span class="form-hint">Your authentication token</span>
-                    </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group full">
-                            <label class="form-label">API Base URL</label>
-                            <input type="text" class="form-input" id="baseURL" value="https://builder.datakite.app">
-                            <span class="form-hint">Default: https://builder.datakite.app</span>
-                </div>
-                    </div>
-                </div>
+          <div
+            class="step active"
+            data-step="1"
+            onclick="scrollToCard('config')"
+          >
+            <div class="step-number">1</div>
+            <div class="step-content">
+              <div class="step-label">API Settings</div>
+              <div class="step-desc">Configure your connection</div>
+            </div>
+          </div>
+
+          <div class="step pending" data-step="2" onclick="scrollToCard('ai')">
+            <div class="step-number">2</div>
+            <div class="step-content">
+              <div class="step-label">AI Provider</div>
+              <div class="step-desc">Select AI model</div>
+            </div>
+          </div>
+
+          <div
+            class="step pending"
+            data-step="3"
+            onclick="scrollToCard('questions')"
+          >
+            <div class="step-number">3</div>
+            <div class="step-content">
+              <div class="step-label">Questions</div>
+              <div class="step-desc">Enter FAQ questions</div>
+            </div>
+          </div>
+
+          <div class="step pending" data-step="4">
+            <div class="step-number">4</div>
+            <div class="step-content">
+              <div class="step-label">Process</div>
+              <div class="step-desc">Generate & submit</div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Content Area -->
+      <div class="content">
+        <!-- Step 1: API Configuration -->
+        <div class="card" id="config">
+          <div class="card-header">
+            <div class="card-title">
+              <div class="card-title-icon blue">🔌</div>
+              API Configuration
+            </div>
+            <span class="card-badge required">Required</span>
+          </div>
+          <div class="card-body">
+            <div class="helper-card">
+              <span class="helper-icon">💡</span>
+              <div class="helper-content">
+                <h4>Where to find these values?</h4>
+                <p>
+                  Get your Assistant Code, Version Code, and FAQ ID from the
+                  Rawi Builder dashboard. Your JWT token is your authentication
+                  key.
+                </p>
+              </div>
             </div>
 
-            <!-- Step 2: AI Settings -->
-            <div class="card" id="ai">
-                <div class="card-header">
-                    <div class="card-title">
-                        <div class="card-title-icon green">🤖</div>
-                        AI Provider
-                    </div>
-                    <span class="card-badge required">Required</span>
-                </div>
-                <div class="card-body">
-                    <div class="form-row">
-                    <div class="form-group">
-                            <label class="form-label">Provider</label>
-                            <select class="form-input" id="aiProvider" onchange="updateProviderSettings()">
-                            <option value="gemini">Google Gemini (Recommended)</option>
-                            <option value="openai">OpenAI</option>
-                            <option value="openrouter">OpenRouter</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                            <label class="form-label">Model</label>
-                            <select class="form-input" id="aiModel">
-                            <option value="gemini-2.0-flash">Gemini 2.0 Flash</option>
-                        </select>
-                    </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group full">
-                            <label class="form-label">
-                                API Key <span class="required">*</span>
-                            </label>
-                            <input type="password" class="form-input" id="apiKey" placeholder="Enter your AI API key">
-                            <span class="form-hint" id="apiKeyHelp">
-                                Get your key from <a href="https://makersuite.google.com/app/apikey" target="_blank">Google AI Studio</a>
-                            </span>
-                        </div>
-                    </div>
-                </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">
+                  Assistant Code
+                  <span
+                    class="hint-icon"
+                    title="Found in your assistant settings"
+                    >?</span
+                  >
+                </label>
+                <input
+                  type="text"
+                  class="form-input"
+                  id="assistantCode"
+                  value="li6monObUb"
+                  placeholder="e.g., li6monObUb"
+                />
+              </div>
+              <div class="form-group">
+                <label class="form-label">
+                  Version Code
+                  <span class="hint-icon" title="Found in your version settings"
+                    >?</span
+                  >
+                </label>
+                <input
+                  type="text"
+                  class="form-input"
+                  id="versionCode"
+                  value="li68VXoo7d"
+                  placeholder="e.g., li68VXoo7d"
+                />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">
+                  FAQ ID <span class="required">*</span>
+                </label>
+                <input
+                  type="text"
+                  class="form-input"
+                  id="faqId"
+                  placeholder="Enter your FAQ ID"
+                />
+                <span class="form-hint"
+                  >The unique identifier for your FAQ knowledge base</span
+                >
+              </div>
+              <div class="form-group">
+                <label class="form-label">
+                  JWT Token <span class="required">*</span>
+                </label>
+                <input
+                  type="password"
+                  class="form-input"
+                  id="jwt"
+                  placeholder="Enter your JWT token"
+                />
+                <span class="form-hint">Your authentication token</span>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group full">
+                <label class="form-label">API Base URL</label>
+                <input
+                  type="text"
+                  class="form-input"
+                  id="baseURL"
+                  value="https://builder.datakite.app"
+                />
+                <span class="form-hint"
+                  >Default: https://builder.datakite.app</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2: AI Settings -->
+        <div class="card" id="ai">
+          <div class="card-header">
+            <div class="card-title">
+              <div class="card-title-icon green">🤖</div>
+              AI Provider
+            </div>
+            <span class="card-badge required">Required</span>
+          </div>
+          <div class="card-body">
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Provider</label>
+                <select
+                  class="form-input"
+                  id="aiProvider"
+                  onchange="updateProviderSettings()"
+                >
+                  <option value="gemini">Google Gemini (Recommended)</option>
+                  <option value="openai">OpenAI</option>
+                  <option value="openrouter">OpenRouter</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Model</label>
+                <select class="form-input" id="aiModel">
+                  <option value="gemini-2.0-flash">Gemini 2.0 Flash</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group full">
+                <label class="form-label">
+                  API Key <span class="required">*</span>
+                </label>
+                <input
+                  type="password"
+                  class="form-input"
+                  id="apiKey"
+                  placeholder="Enter your AI API key"
+                />
+                <span class="form-hint" id="apiKeyHelp">
+                  Get your key from
+                  <a
+                    href="https://makersuite.google.com/app/apikey"
+                    target="_blank"
+                    >Google AI Studio</a
+                  >
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3: Questions Input -->
+        <div class="card" id="questions">
+          <div class="card-header">
+            <div class="card-title">
+              <div class="card-title-icon yellow">❓</div>
+              Questions Input
+            </div>
+            <span class="card-badge required">Required</span>
+          </div>
+          <div class="card-body">
+            <div class="form-group" style="margin-bottom: 20px">
+              <label class="form-label">Context / Instructions</label>
+              <textarea
+                class="form-input"
+                id="aiInstructions"
+                placeholder="Example: These FAQs are for an e-commerce platform selling electronics. Focus on product support, shipping, and returns.
+
+مثال: هذه الأسئلة لمتجر إلكتروني. ركز على دعم المنتجات والشحن والإرجاع."
+                style="min-height: 80px"
+              ></textarea>
+              <span class="form-hint"
+                >Optional: Provide context to help AI generate more accurate
+                content</span
+              >
             </div>
 
-            <!-- Step 3: Questions Input -->
-            <div class="card" id="questions">
-                <div class="card-header">
-                    <div class="card-title">
-                        <div class="card-title-icon yellow">❓</div>
-                        Questions Input
-                    </div>
-                    <span class="card-badge required">Required</span>
-                </div>
-                <div class="card-body">
-                    <div class="form-group" style="margin-bottom: 20px;">
-                        <label class="form-label">Context / Instructions</label>
-                        <textarea class="form-input" id="aiInstructions" placeholder="Example: These FAQs are for an e-commerce platform selling electronics. Focus on product support, shipping, and returns.
-
-مثال: هذه الأسئلة لمتجر إلكتروني. ركز على دعم المنتجات والشحن والإرجاع." style="min-height: 80px;"></textarea>
-                        <span class="form-hint">Optional: Provide context to help AI generate more accurate content</span>
-            </div>
-
-                <div class="form-group">
-                        <label class="form-label">
-                            FAQ Questions <span class="required">*</span>
-                        </label>
-                        <textarea class="form-input" id="questionsInput" placeholder="Enter one question per line:
+            <div class="form-group">
+              <label class="form-label">
+                FAQ Questions <span class="required">*</span>
+              </label>
+              <textarea
+                class="form-input"
+                id="questionsInput"
+                placeholder="Enter one question per line:
 
 How do I track my order?
 كيف يمكنني تتبع طلبي؟
 What is your return policy?
-ما هي سياسة الإرجاع؟"></textarea>
-                        <span class="form-hint">Enter one question per line. Mix of Arabic and English is supported.</span>
+ما هي سياسة الإرجاع؟"
+              ></textarea>
+              <span class="form-hint"
+                >Enter one question per line. Mix of Arabic and English is
+                supported.</span
+              >
             </div>
 
-                    <div class="btn-group">
-                        <button class="btn btn-primary" id="processBtn" onclick="processQuestions()">
-                            Process Questions
-                        </button>
-                        <button class="btn btn-secondary" onclick="clearAll()">
-                            Clear All
-                        </button>
-                    </div>
-                </div>
+            <div class="btn-group">
+              <button
+                class="btn btn-primary"
+                id="processBtn"
+                onclick="processQuestions()"
+              >
+                Process Questions
+              </button>
+              <button class="btn btn-secondary" onclick="clearAll()">
+                Clear All
+              </button>
             </div>
-
-            <!-- Progress Card -->
-            <div class="card progress-card" id="progressCard">
-                <div class="progress-content">
-                    <div class="progress-spinner"></div>
-                    <div class="progress-title" id="progressTitle">Processing your questions...</div>
-                    <div class="progress-subtitle" id="progressSubtitle">This may take a moment</div>
-                    <div class="progress-bar-container">
-                        <div class="progress-bar" id="progressBar"></div>
-                    </div>
-                    <div class="progress-stats">
-                        <div class="progress-stat">
-                            <span>Questions:</span>
-                            <strong id="progressCurrent">0</strong> / <span id="progressTotal">0</span>
-                        </div>
-                        <div class="progress-stat">
-                            <span>API Calls:</span>
-                            <strong id="progressAPICalls">0</strong>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Results Card -->
-            <div class="card results-card" id="resultsCard">
-                <div class="card-header">
-                    <div class="card-title">
-                        <div class="card-title-icon green">✅</div>
-                        Processing Results
-                        </div>
-                        </div>
-                
-                <div class="stats-row">
-                    <div class="stat-item">
-                        <div class="stat-value" id="totalQuestions">0</div>
-                        <div class="stat-label">Questions</div>
-                        </div>
-                    <div class="stat-item">
-                        <div class="stat-value success" id="successCount">0</div>
-                        <div class="stat-label">Successful</div>
-                        </div>
-                    <div class="stat-item">
-                        <div class="stat-value error" id="errorCount">0</div>
-                        <div class="stat-label">Failed</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value primary" id="totalAPICalls">0</div>
-                        <div class="stat-label">API Calls</div>
-                    </div>
-                </div>
-
-                <div class="question-list" id="questionResults"></div>
-
-                <div class="card-body" style="border-top: 1px solid var(--gray-200);">
-                    <div class="btn-group" style="margin-top: 0;">
-                        <button class="btn btn-primary" onclick="retryAllFailed()" id="retryBtn" style="display: none;">
-                            Retry Failed
-                        </button>
-                        <button class="btn btn-secondary" onclick="exportResults()">
-                            Export Report
-                        </button>
-                </div>
-            </div>
+          </div>
         </div>
-    </div>
+
+        <!-- Progress Card -->
+        <div class="card progress-card" id="progressCard">
+          <div class="progress-content">
+            <div class="progress-spinner"></div>
+            <div class="progress-title" id="progressTitle">
+              Processing your questions...
+            </div>
+            <div class="progress-subtitle" id="progressSubtitle">
+              This may take a moment
+            </div>
+            <div class="progress-bar-container">
+              <div class="progress-bar" id="progressBar"></div>
+            </div>
+            <div class="progress-stats">
+              <div class="progress-stat">
+                <span>Questions:</span>
+                <strong id="progressCurrent">0</strong> /
+                <span id="progressTotal">0</span>
+              </div>
+              <div class="progress-stat">
+                <span>API Calls:</span>
+                <strong id="progressAPICalls">0</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Results Card -->
+        <div class="card results-card" id="resultsCard">
+          <div class="card-header">
+            <div class="card-title">
+              <div class="card-title-icon green">✅</div>
+              Processing Results
+            </div>
+          </div>
+
+          <div class="stats-row">
+            <div class="stat-item">
+              <div class="stat-value" id="totalQuestions">0</div>
+              <div class="stat-label">Questions</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value success" id="successCount">0</div>
+              <div class="stat-label">Successful</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value error" id="errorCount">0</div>
+              <div class="stat-label">Failed</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value primary" id="totalAPICalls">0</div>
+              <div class="stat-label">API Calls</div>
+            </div>
+          </div>
+
+          <div class="question-list" id="questionResults"></div>
+
+          <div class="card-body" style="border-top: 1px solid var(--gray-200)">
+            <div class="btn-group" style="margin-top: 0">
+              <button
+                class="btn btn-primary"
+                onclick="retryAllFailed()"
+                id="retryBtn"
+                style="display: none"
+              >
+                Retry Failed
+              </button>
+              <button class="btn btn-secondary" onclick="exportResults()">
+                Export Report
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </main>
 
-    <script>
-        // Global state
-        let processedQuestions = [];
-        let baseURL = 'https://builder.datakite.app';
-        let isProcessing = false;
-        let currentStep = 1;
-
-        // Model configurations
-        const providerModels = {
-            openai: [
-                { value: 'gpt-4o-mini', label: 'GPT-4o Mini (Recommended)' },
-                { value: 'gpt-4o', label: 'GPT-4o' },
-                { value: 'gpt-4-turbo', label: 'GPT-4 Turbo' }
-            ],
-            gemini: [
-                { value: 'gemini-2.0-flash', label: 'Gemini 2.0 Flash (Latest)' },
-                { value: 'gemini-1.5-flash', label: 'Gemini 1.5 Flash' },
-                { value: 'gemini-1.5-pro', label: 'Gemini 1.5 Pro' }
-            ],
-            openrouter: [
-                { value: 'openai/gpt-4o-mini', label: 'OpenAI GPT-4o Mini' },
-                { value: 'google/gemini-pro-1.5', label: 'Gemini Pro 1.5' },
-                { value: 'anthropic/claude-3.5-sonnet', label: 'Claude 3.5 Sonnet' }
-            ]
-        };
-
-        const providerInfo = {
-            openai: { url: 'https://platform.openai.com/api-keys', text: 'OpenAI Platform' },
-            gemini: { url: 'https://makersuite.google.com/app/apikey', text: 'Google AI Studio' },
-            openrouter: { url: 'https://openrouter.ai/keys', text: 'OpenRouter' }
-        };
-
-        // Initialize
-        window.addEventListener('DOMContentLoaded', () => {
-            loadSettings();
-            updateSteps();
-            setupInputListeners();
-        });
-
-        function loadSettings() {
-            const fields = {
-                'ai_provider': 'aiProvider',
-                'ai_model': 'aiModel',
-                'api_key': 'apiKey',
-                'jwt_token': 'jwt',
-                'assistant_code': 'assistantCode',
-                'version_code': 'versionCode',
-                'base_url': 'baseURL',
-                'ai_instructions': 'aiInstructions',
-                'faq_id': 'faqId'
-            };
-
-            const savedProvider = localStorage.getItem('ai_provider') || 'gemini';
-            document.getElementById('aiProvider').value = savedProvider;
-            updateProviderSettings();
-            
-            Object.entries(fields).forEach(([key, id]) => {
-                if (key !== 'ai_provider') {
-                    const saved = localStorage.getItem(key);
-                    if (saved && document.getElementById(id)) {
-                        document.getElementById(id).value = saved;
-                    }
-                }
-            });
-        }
-
-        function saveSettings() {
-            const fields = {
-                'jwt_token': 'jwt',
-                'assistant_code': 'assistantCode',
-                'version_code': 'versionCode',
-                'base_url': 'baseURL',
-                'api_key': 'apiKey',
-                'ai_provider': 'aiProvider',
-                'ai_model': 'aiModel',
-                'ai_instructions': 'aiInstructions',
-                'faq_id': 'faqId'
-            };
-
-            Object.entries(fields).forEach(([key, id]) => {
-                const el = document.getElementById(id);
-                if (el) localStorage.setItem(key, el.value);
-            });
-        }
-
-        function setupInputListeners() {
-            // Track input changes to update steps
-            const step1Inputs = ['assistantCode', 'versionCode', 'faqId', 'jwt', 'baseURL'];
-            const step2Inputs = ['aiProvider', 'aiModel', 'apiKey'];
-            const step3Inputs = ['questionsInput'];
-
-            [...step1Inputs, ...step2Inputs, ...step3Inputs].forEach(id => {
-                const el = document.getElementById(id);
-                if (el) {
-                    el.addEventListener('input', updateSteps);
-                    el.addEventListener('change', updateSteps);
-                }
-            });
-        }
-
-        function updateSteps() {
-            const step1Complete = document.getElementById('faqId').value.trim() && 
-                                  document.getElementById('jwt').value.trim();
-            const step2Complete = document.getElementById('apiKey').value.trim();
-            const step3Complete = document.getElementById('questionsInput').value.trim();
-
-            // Update step states
-            document.querySelectorAll('.step').forEach((step, index) => {
-                step.classList.remove('active', 'completed', 'pending');
-                
-                if (index === 0) {
-                    step.classList.add(step1Complete ? 'completed' : 'active');
-                } else if (index === 1) {
-                    if (!step1Complete) step.classList.add('pending');
-                    else step.classList.add(step2Complete ? 'completed' : 'active');
-                } else if (index === 2) {
-                    if (!step1Complete || !step2Complete) step.classList.add('pending');
-                    else step.classList.add(step3Complete ? 'completed' : 'active');
-                } else {
-                    step.classList.add(step1Complete && step2Complete && step3Complete ? 'active' : 'pending');
-                }
-            });
-        }
-
-        function scrollToCard(id) {
-            document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-
-        function updateProviderSettings() {
-            const provider = document.getElementById('aiProvider').value;
-            const modelSelect = document.getElementById('aiModel');
-            const helpText = document.getElementById('apiKeyHelp');
-
-            modelSelect.innerHTML = '';
-            providerModels[provider].forEach(model => {
-                const option = document.createElement('option');
-                option.value = model.value;
-                option.textContent = model.label;
-                modelSelect.appendChild(option);
-            });
-
-            const info = providerInfo[provider];
-            helpText.innerHTML = `Get your key from <a href="${info.url}" target="_blank">${info.text}</a>`;
-            localStorage.setItem('ai_provider', provider);
-        }
-
-        // Toast notifications
-        function showToast(message, type = 'info') {
-            const container = document.getElementById('toastContainer');
-            const toast = document.createElement('div');
-            toast.className = `toast ${type}`;
-            
-            const icons = { success: '✓', error: '✕', info: 'ℹ' };
-            toast.innerHTML = `<span class="toast-icon">${icons[type]}</span>${message}`;
-            
-            container.appendChild(toast);
-            setTimeout(() => toast.remove(), 4000);
-        }
-
-        // Validation
-        function validateForm() {
-            const required = [
-                { id: 'faqId', name: 'FAQ ID' },
-                { id: 'jwt', name: 'JWT Token' },
-                { id: 'apiKey', name: 'API Key' },
-                { id: 'questionsInput', name: 'Questions' }
-            ];
-
-            let isValid = true;
-            document.querySelectorAll('.form-input.error').forEach(el => el.classList.remove('error'));
-
-            for (const field of required) {
-                const element = document.getElementById(field.id);
-                if (!element.value.trim()) {
-                    element.classList.add('error');
-                    showToast(`${field.name} is required`, 'error');
-                    element.focus();
-                    isValid = false;
-                    break;
-                }
-            }
-
-            return isValid;
-        }
-
-        // Progress updates
-        function updateProgress(current, total, text, apiCalls) {
-            const percent = Math.round((current / total) * 100);
-            document.getElementById('progressBar').style.width = `${percent}%`;
-            document.getElementById('progressCurrent').textContent = current;
-            document.getElementById('progressTotal').textContent = total;
-            document.getElementById('progressSubtitle').textContent = text;
-            document.getElementById('progressAPICalls').textContent = apiCalls;
-        }
-
-        async function processQuestions() {
-            if (isProcessing) return;
-            if (!validateForm()) return;
-
-            saveSettings();
-            
-            const questionsText = document.getElementById('questionsInput').value.trim();
-            const questions = questionsText.split('\n').filter(q => q.trim() !== '');
-            
-            if (questions.length === 0) {
-                showToast('Please enter at least one question', 'error');
-                return;
-            }
-
-            isProcessing = true;
-            document.getElementById('processBtn').disabled = true;
-            document.getElementById('progressCard').classList.add('active');
-            document.getElementById('resultsCard').classList.remove('active');
-            
-            baseURL = document.getElementById('baseURL').value.trim();
-            const aiInstructions = document.getElementById('aiInstructions').value.trim();
-
-            processedQuestions = [];
-            let totalAPICalls = 0;
-
-            try {
-                for (let i = 0; i < questions.length; i++) {
-                    const question = questions[i].trim();
-                    updateProgress(i, questions.length, `Processing: ${question.substring(0, 40)}...`, totalAPICalls);
-                    
-                    try {
-                    const questionData = await processQuestion(question, i + 1, aiInstructions);
-                    processedQuestions.push(questionData);
-                        
-                        // Count API calls
-                        const arStatus = getLanguageStatus(questionData.arabic);
-                        const enStatus = getLanguageStatus(questionData.english);
-                        totalAPICalls += arStatus.total + enStatus.total;
-                        
-                    } catch (error) {
-                        console.error(`Error processing question ${i + 1}:`, error);
-                        showToast(`Error on Q${i + 1}: ${error.message}`, 'error');
-                        
-                        processedQuestions.push({
-                            index: i + 1,
-                            originalQuestion: question,
-                            error: error.message,
-                            arabic: { question: '', tags: [], synonyms: [], responses: [], questionId: null, apiCalls: { createQuestion: { status: 'error', error: error.message }, addTags: [], addSynonyms: [], addResponses: [] }},
-                            english: { question: '', tags: [], synonyms: [], responses: [], questionId: null, apiCalls: { createQuestion: { status: 'error', error: error.message }, addTags: [], addSynonyms: [], addResponses: [] }}
-                        });
-                    }
-                }
-
-                updateProgress(questions.length, questions.length, 'Complete!', totalAPICalls);
-                showToast('Processing complete!', 'success');
-                displayResults();
-                
-            } catch (error) {
-                showToast('Processing failed: ' + error.message, 'error');
-            } finally {
-                isProcessing = false;
-                document.getElementById('processBtn').disabled = false;
-                document.getElementById('progressCard').classList.remove('active');
-                document.getElementById('resultsCard').classList.add('active');
-            }
-        }
-
-        async function processQuestion(question, index, instructions = '') {
-            const provider = document.getElementById('aiProvider').value;
-            const model = document.getElementById('aiModel').value;
-            const apiKey = document.getElementById('apiKey').value;
-            
-            const questionData = {
-                index: index,
-                originalQuestion: question,
-                arabic: {
-                    question: '',
-                    questionId: null,
-                    tags: [],
-                    synonyms: [],
-                    responses: [],
-                    apiCalls: {
-                        createQuestion: { status: 'pending', error: null },
-                        addTags: [],
-                        addSynonyms: [],
-                        addResponses: []
-                    }
-                },
-                english: {
-                    question: '',
-                    questionId: null,
-                    tags: [],
-                    synonyms: [],
-                    responses: [],
-                    apiCalls: {
-                        createQuestion: { status: 'pending', error: null },
-                        addTags: [],
-                        addSynonyms: [],
-                        addResponses: []
-                    }
-                }
-            };
-
-            const aiContent = await generateAIContent(question, provider, model, apiKey, instructions);
-            
-            questionData.arabic.question = aiContent.arabic.question;
-            questionData.arabic.tags = aiContent.arabic.tags || [];
-            questionData.arabic.synonyms = aiContent.arabic.synonyms || [];
-            questionData.arabic.responses = aiContent.arabic.responses || [];
-
-            questionData.english.question = aiContent.english.question;
-            questionData.english.tags = aiContent.english.tags || [];
-            questionData.english.synonyms = aiContent.english.synonyms || [];
-            questionData.english.responses = aiContent.english.responses || [];
-
-            // Initialize API call statuses
-            const tagsCount = Math.max(questionData.arabic.tags.length, questionData.english.tags.length, 5);
-            const synonymsCount = Math.max(questionData.arabic.synonyms.length, questionData.english.synonyms.length, 10);
-            const responsesCount = Math.max(questionData.arabic.responses.length, questionData.english.responses.length, 2);
-
-            for (let i = 0; i < tagsCount; i++) {
-                questionData.arabic.apiCalls.addTags.push({ status: 'pending', error: null });
-                questionData.english.apiCalls.addTags.push({ status: 'pending', error: null });
-            }
-            for (let i = 0; i < synonymsCount; i++) {
-                questionData.arabic.apiCalls.addSynonyms.push({ status: 'pending', error: null });
-                questionData.english.apiCalls.addSynonyms.push({ status: 'pending', error: null });
-            }
-            for (let i = 0; i < responsesCount; i++) {
-                questionData.arabic.apiCalls.addResponses.push({ status: 'pending', error: null });
-                questionData.english.apiCalls.addResponses.push({ status: 'pending', error: null });
-            }
-
-            // Process both languages in PARALLEL
-            await Promise.all([
-                processLanguage(questionData, 'arabic', 1),
-                processLanguage(questionData, 'english', 2)
-            ]);
-
-            return questionData;
-        }
-
-        async function generateAIContent(question, provider, model, apiKey, instructions = '') {
-            const contextSection = instructions ? `\n\nContext/Category Information:\n${instructions}\n` : '';
-            
-            const prompt = `You are an expert FAQ content generator optimized for Rule-Based FAQ Search Systems.
-
-Given this FAQ question: "${question}"${contextSection}
-
-## HOW THE FAQ SEARCH SYSTEM WORKS
-
-The search system looks for FAQs in this priority order:
-1. **EXACT + PHRASE Search** (Highest Priority) - Searches in: Main Question + All Synonyms
-2. **Stemmed Search** (Medium Priority) - Searches using word roots
-3. **Tags Search** (Lowest Priority) - Searches in general keywords
-
-## GENERATION GUIDELINES
-
-### QUESTIONS - Best Practices:
-✅ Write as the customer would ACTUALLY ask (natural language)
-✅ Keep it SHORT and DIRECT (under 10 words)
-✅ Use colloquial/common phrasing
-❌ Avoid overly long questions with unnecessary details
-
-### SYNONYMS - Strategy for Maximum Match Rate (10 synonyms):
-The synonyms are the MOST IMPORTANT element! They must cover ALL ways a customer might ask the same question.
-
-Distribution Strategy (10 synonyms):
-| #   | Type                    | Description                                      |
-|-----|-------------------------|--------------------------------------------------|
-| 1-2 | Direct question forms   | Alternative ways to ask the same question        |
-| 3-4 | Keywords/phrases        | Key terms without question format                |
-| 5-6 | Dialect variations      | Gulf Arabic, Egyptian, Levantine, etc.           |
-| 7-8 | Alternative phrasings   | Different word choices, formal/informal          |
-| 9-10| Common misspellings/abbr| Typos users commonly make, shortcuts             |
-
-Arabic Dialect Examples:
-- Gulf: "متى تشتغلون؟" 
-- Levantine: "ايمتى بتفتحو؟"
-- Egyptian: "بتفتحوا امتى؟"
-
-### TAGS - Rules:
-Tags are single ROOT WORDS for fallback search.
-✅ Single words only (NOT phrases)
-✅ Root form without articles ("عمل" not "العمل")
-✅ Core concept words
-✅ MINIMUM 3 characters per tag
-❌ No compound phrases
-❌ No articles (ال, the, a, an)
-❌ No conjugated verbs (use infinitive/root)
-❌ No tags shorter than 3 characters
-
-Example Tags for "What are your working hours?":
-- Arabic: ["ساعات", "عمل", "دوام", "فتح", "وقت"]
-- English: ["hours", "work", "schedule", "open", "time"]
-
-### RESPONSES:
-Generate 2 varied responses for diversity:
-- Response 1: Direct and concise
-- Response 2: Slightly more detailed/friendly
-
-## OUTPUT FORMAT
-
-Respond with ONLY this JSON (no additional text):
-
-{
-  "arabic": {
-    "question": "Short, direct question as customer would ask in Arabic",
-    "tags": ["tag1", "tag2", "tag3", "tag4", "tag5"],
-    "synonyms": ["syn1", "syn2", "syn3", "syn4", "syn5", "syn6", "syn7", "syn8", "syn9", "syn10"],
-    "responses": ["Response 1", "Response 2"]
-  },
-  "english": {
-    "question": "Short, direct question as customer would ask in English",
-    "tags": ["tag1", "tag2", "tag3", "tag4", "tag5"],
-    "synonyms": ["syn1", "syn2", "syn3", "syn4", "syn5", "syn6", "syn7", "syn8", "syn9", "syn10"],
-    "responses": ["Response 1", "Response 2"]
-  }
-}
-
-CRITICAL REQUIREMENTS:
-1. ⚠️ MINIMUM LENGTH: ALL text (questions, tags, synonyms, responses) MUST be at least 3 characters long. No exceptions!
-2. Question: Short (<10 words), natural customer language, minimum 3 characters
-3. Tags: Exactly 5 single ROOT words, each tag MUST be at least 3 characters
-4. Synonyms: Exactly 10, each synonym MUST be at least 3 characters
-5. Responses: Exactly 2 comprehensive helpful answers, minimum 3 characters each
-6. Cover Arabic dialects in synonyms (Gulf, Egyptian, Levantine)
-7. Include common misspellings/typos users make (but keep them 3+ characters)
-${instructions ? '8. IMPORTANT: Apply the provided context/category information for accuracy.' : ''}`;
-
-            let response, data, content;
-
-            try {
-            if (provider === 'openai') {
-                response = await fetch('https://api.openai.com/v1/chat/completions', {
-                    method: 'POST',
-                        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
-                    body: JSON.stringify({
-                        model: model,
-                        messages: [
-                                { role: 'system', content: 'You are a helpful FAQ assistant. Always respond with valid JSON only.' },
-                            { role: 'user', content: prompt }
-                        ],
-                        temperature: 0.7,
-                        max_tokens: 3000
-                    })
-                });
-
-                if (!response.ok) {
-                        const errorData = await response.json().catch(() => ({}));
-                        throw new Error(errorData.error?.message || `OpenAI API error: ${response.status}`);
-                }
-
-                data = await response.json();
-                content = data.choices[0].message.content.trim();
-
-            } else if (provider === 'gemini') {
-                response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
-                    method: 'POST',
-                        headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey },
-                    body: JSON.stringify({
-                            contents: [{ parts: [{ text: `You are a helpful FAQ assistant. Always respond with valid JSON only.\n\n${prompt}` }] }],
-                            generationConfig: { temperature: 0.7, maxOutputTokens: 3000 }
-                    })
-                });
-
-                if (!response.ok) {
-                        const errorData = await response.json().catch(() => ({}));
-                        throw new Error(errorData.error?.message || `Gemini API error: ${response.status}`);
-                }
-
-                data = await response.json();
-                    if (!data.candidates?.[0]?.content) throw new Error('Invalid Gemini response');
-                content = data.candidates[0].content.parts[0].text.trim();
-
-            } else if (provider === 'openrouter') {
-                response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${apiKey}`,
-                        'HTTP-Referer': window.location.href,
-                            'X-Title': 'FAQ Builder'
-                    },
-                    body: JSON.stringify({
-                        model: model,
-                        messages: [
-                                { role: 'system', content: 'You are a helpful FAQ assistant. Always respond with valid JSON only.' },
-                            { role: 'user', content: prompt }
-                        ],
-                        temperature: 0.7,
-                        max_tokens: 3000
-                    })
-                });
-
-                if (!response.ok) {
-                        const errorData = await response.json().catch(() => ({}));
-                        throw new Error(errorData.error?.message || `OpenRouter API error: ${response.status}`);
-                }
-
-                data = await response.json();
-                content = data.choices[0].message.content.trim();
-            }
-
-            let jsonMatch = content.match(/\{[\s\S]*\}/);
-                if (!jsonMatch) throw new Error('No valid JSON found in AI response');
-
-                let parsedContent;
-                try {
-                    parsedContent = JSON.parse(jsonMatch[0]);
-                } catch (e) {
-                    throw new Error('Failed to parse AI response as JSON');
-                }
-                
-                if (!parsedContent.arabic || !parsedContent.english) throw new Error('AI response missing sections');
-                if (!parsedContent.arabic.question || !parsedContent.english.question) throw new Error('AI response missing questions');
-
-                // Filter out any text shorter than 3 characters (API validation requirement)
-                const filterMinLength = (arr) => (arr || []).filter(item => item && item.length >= 3);
-                
-                parsedContent.arabic.tags = filterMinLength(parsedContent.arabic.tags);
-                parsedContent.arabic.synonyms = filterMinLength(parsedContent.arabic.synonyms);
-                parsedContent.arabic.responses = filterMinLength(parsedContent.arabic.responses);
-                parsedContent.english.tags = filterMinLength(parsedContent.english.tags);
-                parsedContent.english.synonyms = filterMinLength(parsedContent.english.synonyms);
-                parsedContent.english.responses = filterMinLength(parsedContent.english.responses);
-
-                // Validate questions have minimum length
-                if (parsedContent.arabic.question && parsedContent.arabic.question.length < 3) {
-                    console.warn('Arabic question too short, keeping original');
-                }
-                if (parsedContent.english.question && parsedContent.english.question.length < 3) {
-                    console.warn('English question too short, keeping original');
-                }
-
-                return parsedContent;
-
-            } catch (error) {
-                console.error('AI Generation Error:', error);
-                throw error;
-            }
-        }
-
-        async function processLanguage(questionData, lang, languageId) {
-            const assistantCode = document.getElementById('assistantCode').value.trim();
-            const versionCode = document.getElementById('versionCode').value.trim();
-            const faqId = document.getElementById('faqId').value.trim();
-            const jwt = document.getElementById('jwt').value.trim();
-
-            const langData = questionData[lang];
-
-            if (!langData.question) {
-                langData.apiCalls.createQuestion.status = 'error';
-                langData.apiCalls.createQuestion.error = 'No question generated';
-                return;
-            }
-
-            // Step 1: Create Question
-            try {
-                const createResult = await createQuestion(assistantCode, versionCode, faqId, languageId, langData.question, jwt);
-                langData.questionId = createResult.createdId;
-                langData.apiCalls.createQuestion.status = 'success';
-            } catch (error) {
-                langData.apiCalls.createQuestion.status = 'error';
-                langData.apiCalls.createQuestion.error = error.message;
-                return;
-            }
-
-            // Step 2: Add Tags, Synonyms, and Responses in PARALLEL
-            const tagPromises = langData.tags.map((tag, i) => 
-                addTag(assistantCode, versionCode, faqId, languageId, langData.questionId, tag, jwt)
-                    .then(() => { if (langData.apiCalls.addTags[i]) langData.apiCalls.addTags[i].status = 'success'; })
-                    .catch(error => { if (langData.apiCalls.addTags[i]) { langData.apiCalls.addTags[i].status = 'error'; langData.apiCalls.addTags[i].error = error.message; } })
-            );
-
-            const synonymPromises = langData.synonyms.map((synonym, i) => 
-                addSynonym(assistantCode, versionCode, faqId, languageId, langData.questionId, synonym, jwt)
-                    .then(() => { if (langData.apiCalls.addSynonyms[i]) langData.apiCalls.addSynonyms[i].status = 'success'; })
-                    .catch(error => { if (langData.apiCalls.addSynonyms[i]) { langData.apiCalls.addSynonyms[i].status = 'error'; langData.apiCalls.addSynonyms[i].error = error.message; } })
-            );
-
-            const responsePromises = langData.responses.map((resp, i) => 
-                addResponse(assistantCode, versionCode, faqId, languageId, langData.questionId, resp, jwt)
-                    .then(() => { if (langData.apiCalls.addResponses[i]) langData.apiCalls.addResponses[i].status = 'success'; })
-                    .catch(error => { if (langData.apiCalls.addResponses[i]) { langData.apiCalls.addResponses[i].status = 'error'; langData.apiCalls.addResponses[i].error = error.message; } })
-            );
-
-            await Promise.all([...tagPromises, ...synonymPromises, ...responsePromises]);
-        }
-
-        // API Functions
-        async function createQuestion(assistantCode, versionCode, faqId, languageId, question, jwt) {
-            const url = `${baseURL}/api/knowledge_ai/${assistantCode}/${versionCode}/faq/${faqId}/${languageId}/question`;
-            const response = await fetch(url, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${jwt}` },
-                body: JSON.stringify({ question: question })
-            });
-            if (!response.ok) {
-                const error = await response.json().catch(() => ({}));
-                throw new Error(error.message || `Failed: ${response.status}`);
-            }
-            return await response.json();
-        }
-
-        async function addTag(assistantCode, versionCode, faqId, languageId, questionId, tag, jwt) {
-            const url = `${baseURL}/api/knowledge_ai/${assistantCode}/${versionCode}/faq/${faqId}/${languageId}/question/${questionId}/tag`;
-            const response = await fetch(url, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${jwt}` },
-                body: JSON.stringify({ tag: tag })
-            });
-            if (!response.ok) {
-                const error = await response.json().catch(() => ({}));
-                throw new Error(error.message || `Failed: ${response.status}`);
-            }
-            return await response.json();
-        }
-
-        async function addSynonym(assistantCode, versionCode, faqId, languageId, questionId, synonym, jwt) {
-            const url = `${baseURL}/api/knowledge_ai/${assistantCode}/${versionCode}/faq/${faqId}/${languageId}/question/${questionId}/synonym`;
-            const response = await fetch(url, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${jwt}` },
-                body: JSON.stringify({ questionSynonym: synonym })
-            });
-            if (!response.ok) {
-                const error = await response.json().catch(() => ({}));
-                throw new Error(error.message || `Failed: ${response.status}`);
-            }
-            return await response.json();
-        }
-
-        async function addResponse(assistantCode, versionCode, faqId, languageId, questionId, message, jwt) {
-            const url = `${baseURL}/api/knowledge_ai/${assistantCode}/${versionCode}/faq/${faqId}/${languageId}/question/${questionId}/short_messages`;
-            const response = await fetch(url, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${jwt}` },
-                body: JSON.stringify({ messageText: message })
-            });
-            if (!response.ok) {
-                const error = await response.json().catch(() => ({}));
-                throw new Error(error.message || `Failed: ${response.status}`);
-            }
-            return await response.json();
-        }
-
-        function displayResults() {
-            const resultsDiv = document.getElementById('questionResults');
-            let html = '';
-
-            let totalSuccess = 0, totalError = 0, totalAPICalls = 0;
-
-            processedQuestions.forEach((q, index) => {
-                const arabicStatus = getLanguageStatus(q.arabic);
-                const englishStatus = getLanguageStatus(q.english);
-                
-                totalSuccess += arabicStatus.success + englishStatus.success;
-                totalError += arabicStatus.error + englishStatus.error;
-                totalAPICalls += arabicStatus.total + englishStatus.total;
-
-                const overallStatus = (arabicStatus.error === 0 && englishStatus.error === 0) ? 'success' : 
-                                     (arabicStatus.success === 0 && englishStatus.success === 0) ? 'error' : 'partial';
-
-                html += `
-                    <div class="question-item" id="q-${index}">
-                        <div class="question-header" onclick="toggleQuestion(${index})">
-                            <div class="question-num">${q.index}</div>
-                            <div class="question-info">
-                                <div class="question-text">${escapeHtml(q.originalQuestion)}</div>
-                                <div class="question-meta">${arabicStatus.success + englishStatus.success} successful, ${arabicStatus.error + englishStatus.error} failed</div>
-                            </div>
-                            <span class="question-status ${overallStatus}">
-                                ${overallStatus === 'success' ? '✓ Complete' : overallStatus === 'error' ? '✕ Failed' : '⚠ Partial'}
-                            </span>
-                            <span class="question-expand">▼</span>
-                        </div>
-                        <div class="question-details">
-                            <div class="lang-tabs">
-                                <button class="lang-tab active" onclick="event.stopPropagation(); switchLang(${index}, 'arabic')">العربية</button>
-                                <button class="lang-tab" onclick="event.stopPropagation(); switchLang(${index}, 'english')">English</button>
-                            </div>
-                            ${renderLanguageContent(q, 'arabic', index, true)}
-                            ${renderLanguageContent(q, 'english', index, false)}
-                        </div>
-                    </div>
-                `;
-            });
-
-            if (!html) html = '<div class="empty-state"><div class="empty-icon">📭</div><div class="empty-text">No results to display</div></div>';
-
-            resultsDiv.innerHTML = html;
-            document.getElementById('totalQuestions').textContent = processedQuestions.length;
-            document.getElementById('successCount').textContent = totalSuccess;
-            document.getElementById('errorCount').textContent = totalError;
-            document.getElementById('totalAPICalls').textContent = totalAPICalls;
-            document.getElementById('retryBtn').style.display = totalError > 0 ? '' : 'none';
-        }
-
-        function renderLanguageContent(q, lang, qIndex, isActive) {
-            const langData = q[lang];
-            const calls = langData.apiCalls;
-
-            return `
-                <div class="lang-content ${isActive ? 'active' : ''}" id="lang-${qIndex}-${lang}">
-                    <div class="detail-grid">
-                        <div class="detail-section full">
-                            <div class="detail-title">Question</div>
-                            <div class="detail-content">${escapeHtml(langData.question) || '<em style="color: var(--gray-500);">Not generated</em>'}</div>
-                    </div>
-                        
-                        <div class="detail-section">
-                            <div class="detail-title">Tags (${langData.tags.length})</div>
-                            <div class="detail-content">
-                                <div class="tag-list">
-                                    ${langData.tags.map(t => `<span class="tag">${escapeHtml(t)}</span>`).join('') || '<em style="color: var(--gray-500);">None</em>'}
-                        </div>
-                        </div>
-                    </div>
-                        
-                        <div class="detail-section">
-                            <div class="detail-title">Responses (${langData.responses.length})</div>
-                            <div class="detail-content">
-                                ${langData.responses.map((r, i) => `<p><strong>${i + 1}.</strong> ${escapeHtml(r)}</p>`).join('') || '<em style="color: var(--gray-500);">None</em>'}
-                </div>
-                        </div>
-                        
-                        <div class="detail-section full">
-                            <div class="detail-title">Synonyms (${langData.synonyms.length})</div>
-                            <div class="detail-content">
-                                <div class="synonym-list">
-                                    ${langData.synonyms.map((s, i) => `<div class="synonym-item"><span class="synonym-num">${i + 1}.</span>${escapeHtml(s)}</div>`).join('') || '<em style="color: var(--gray-500);">None</em>'}
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="detail-section full">
-                            <div class="detail-title">API Status</div>
-                            <div class="api-grid">
-                                ${renderAPIItem('Question', calls.createQuestion, qIndex, lang, 'createQuestion')}
-                                ${calls.addTags.slice(0, langData.tags.length).map((t, i) => renderAPIItem(`Tag ${i+1}`, t, qIndex, lang, 'addTags', i)).join('')}
-                                ${calls.addSynonyms.slice(0, langData.synonyms.length).map((s, i) => renderAPIItem(`Syn ${i+1}`, s, qIndex, lang, 'addSynonyms', i)).join('')}
-                                ${calls.addResponses.slice(0, langData.responses.length).map((r, i) => renderAPIItem(`Resp ${i+1}`, r, qIndex, lang, 'addResponses', i)).join('')}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        function renderAPIItem(name, status, qIndex, lang, type, subIndex = null) {
-            const statusClass = status.status === 'success' ? 'success' : status.status === 'error' ? 'error' : 'pending';
-            const retryBtn = status.status === 'error' ? `<button class="api-retry" onclick="event.stopPropagation(); retryAPICall(${qIndex}, '${lang}', '${type}', ${subIndex})">↻</button>` : '';
-            
-            return `<div class="api-item"><span class="api-dot ${statusClass}"></span><span class="api-name">${name}</span>${retryBtn}</div>`;
-        }
-
-        function getLanguageStatus(langData) {
-            let success = 0, error = 0, total = 0;
-            const checkStatus = (call) => { if (!call) return; total++; if (call.status === 'success') success++; if (call.status === 'error') error++; };
-            checkStatus(langData.apiCalls.createQuestion);
-            langData.apiCalls.addTags.forEach(checkStatus);
-            langData.apiCalls.addSynonyms.forEach(checkStatus);
-            langData.apiCalls.addResponses.forEach(checkStatus);
-            return { success, error, total };
-        }
-
-        function toggleQuestion(index) {
-            document.getElementById(`q-${index}`).classList.toggle('open');
-        }
-
-        function switchLang(qIndex, lang) {
-            const tabs = document.querySelectorAll(`#q-${qIndex} .lang-tab`);
-            tabs.forEach(tab => tab.classList.remove('active'));
-            event.target.classList.add('active');
-            document.getElementById(`lang-${qIndex}-arabic`).classList.toggle('active', lang === 'arabic');
-            document.getElementById(`lang-${qIndex}-english`).classList.toggle('active', lang === 'english');
-        }
-
-        async function retryAPICall(qIndex, lang, type, subIndex = null) {
-            const question = processedQuestions[qIndex];
-            const langData = question[lang];
-            const languageId = lang === 'arabic' ? 1 : 2;
-
-            const assistantCode = document.getElementById('assistantCode').value.trim();
-            const versionCode = document.getElementById('versionCode').value.trim();
-            const faqId = document.getElementById('faqId').value.trim();
-            const jwt = document.getElementById('jwt').value.trim();
-
-            showToast('Retrying...', 'info');
-
-            try {
-                if (type === 'createQuestion') {
-                    const result = await createQuestion(assistantCode, versionCode, faqId, languageId, langData.question, jwt);
-                    langData.questionId = result.createdId;
-                    langData.apiCalls.createQuestion.status = 'success';
-                    langData.apiCalls.createQuestion.error = null;
-                } else if (type === 'addTags') {
-                    await addTag(assistantCode, versionCode, faqId, languageId, langData.questionId, langData.tags[subIndex], jwt);
-                    langData.apiCalls.addTags[subIndex].status = 'success';
-                } else if (type === 'addSynonyms') {
-                    await addSynonym(assistantCode, versionCode, faqId, languageId, langData.questionId, langData.synonyms[subIndex], jwt);
-                    langData.apiCalls.addSynonyms[subIndex].status = 'success';
-                } else if (type === 'addResponses') {
-                    await addResponse(assistantCode, versionCode, faqId, languageId, langData.questionId, langData.responses[subIndex], jwt);
-                    langData.apiCalls.addResponses[subIndex].status = 'success';
-                }
-
-                showToast('Retry successful!', 'success');
-                displayResults();
-            } catch (error) {
-                showToast('Retry failed: ' + error.message, 'error');
-            }
-        }
-
-        async function retryAllFailed() {
-            if (!confirm('Retry all failed API calls?')) return;
-
-            showToast('Retrying all failed...', 'info');
-
-            for (let qIndex = 0; qIndex < processedQuestions.length; qIndex++) {
-                for (const lang of ['arabic', 'english']) {
-                    const calls = processedQuestions[qIndex][lang].apiCalls;
-                    if (calls.createQuestion.status === 'error') await retryAPICall(qIndex, lang, 'createQuestion');
-                    for (let i = 0; i < calls.addTags.length; i++) if (calls.addTags[i]?.status === 'error') await retryAPICall(qIndex, lang, 'addTags', i);
-                    for (let i = 0; i < calls.addSynonyms.length; i++) if (calls.addSynonyms[i]?.status === 'error') await retryAPICall(qIndex, lang, 'addSynonyms', i);
-                    for (let i = 0; i < calls.addResponses.length; i++) if (calls.addResponses[i]?.status === 'error') await retryAPICall(qIndex, lang, 'addResponses', i);
-                }
-            }
-
-            showToast('Retry complete!', 'success');
-            displayResults();
-        }
-
-        function exportResults() {
-            const exportData = {
-                timestamp: new Date().toISOString(),
-                configuration: {
-                    assistantCode: document.getElementById('assistantCode').value,
-                    versionCode: document.getElementById('versionCode').value,
-                    faqId: document.getElementById('faqId').value
-                },
-                questions: processedQuestions
-            };
-
-            const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = `faq-report-${Date.now()}.json`;
-            link.click();
-            URL.revokeObjectURL(url);
-            showToast('Report exported!', 'success');
-        }
-
-        function clearAll() {
-            if (!confirm('Clear all data and results?')) return;
-            document.getElementById('questionsInput').value = '';
-            document.getElementById('resultsCard').classList.remove('active');
-                processedQuestions = [];
-            updateSteps();
-            showToast('Cleared', 'info');
-        }
-
-        function escapeHtml(text) {
-            if (!text) return '';
-            return String(text).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]));
-        }
-    </script>
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>
